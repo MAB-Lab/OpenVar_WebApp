@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />	
+		<title>About OpenVar</title>
+		<link rel="stylesheet" href="static/css/style.css" />
+	</head>
+
+	<body>
+		{% extends "OPVar_home.html" %}
+		{% block content %}
+		<h1> About OpenVar </h1>
+		<p> OpenVar is deep genomic variant annotator. 
+		It differs from other annotators as it supports a polycistronic annotation model of human genes. OpenVar is built around the well-known SNPEff annotator, and supports Ensembl, NCBI RefSeq and OpenProt annotations. </p>
+		<p> Using OpenVar can uncover the pathological potential of previously overlooked genomic variants. Preliminary studies highlight that up to 30% of genomic variant currently ignored because falling in non-coding regions, or because leading to a synonymous mutations, may be pathological as they alter currently non-annotated open reading frames (ORFs). </p>
+		<p> For more information about unannotated ORFs, please visit: www.openprot.org </p>
+		{% endblock %}
+	</body>
+</html>

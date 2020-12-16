@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>OpenVar Home Page</title>
+		<link rel="stylesheet" href="static/css/Home_stylesheet.ca">
+	</head>
+	
+	<body>
+		<div class="navbar">
+			<a href="{{ url_for('home') }}" title="OpenVar Home"><img id="OpenVar_logo" src="static/images/Logo.png" alt="OpenVar logo"></a>
+			<a href="{{ url_for('submit') }}" title="Run Analysis">Run Analysis</a>
+			<a href="{{ url_for('help') }}" title="OpenVar documentation">Documentation</a>
+			<a href="https://openprot.org/p/ng/contactUs" title="Contact us" target="_blank">Contact us</a>
+		</div>
+		
+		{% block content %}
+		{% endblock %}
+	</body>
+</html>
