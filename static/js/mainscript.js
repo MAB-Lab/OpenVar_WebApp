@@ -17,7 +17,7 @@ $(document).ready(function(){
 		} else if (selected == "Droso") {
 			$(".form__genome").css("display", "grid");
 			$('select[name="genome"]').hide();
-			S("#DM_genome").show();
+			$("#DM_genome").show();
 		} else {
 			$(".form__genome").css("display", "none");
 		}

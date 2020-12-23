@@ -7,12 +7,8 @@
 
 	
 	<body>
-		<div class="navbar">
-			<a href="{{ url_for('home') }}" title="OpenVar Home"><img id="OpenVar_logo" src="static/images/Logo.png" alt="OpenVar logo"></a>
-			<a href="{{ url_for('submit') }}" title="Run Analysis">Run Analysis</a>
-			<a href="{{ url_for('help') }}" title="OpenVar documentation">Documentation</a>
-			<a href="https://openprot.org/p/ng/contactUs" title="Contact us" target="_blank">Contact us</a>
-		</div>
+		{% extends "OPVar_navbar.html" %}
+		{% block content %}
 
 		<div class="container">
 			<div class="Intro">
@@ -58,6 +54,7 @@
 			</div>
 		</div>
 
+		{% endblock %}
 	</body>
 
 
