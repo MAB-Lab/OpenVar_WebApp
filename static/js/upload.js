@@ -24,12 +24,11 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success: function () {
-				alert('Your VCF file has been uploaded successfully!');
+				alert('Your VCF file has been uploaded successfully! You can now submit the analysis.');
 			}
 		});
 	});
 });
 
 // Chunked uploads
-
 
