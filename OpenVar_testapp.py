@@ -67,7 +67,7 @@ def upload_file_chunked(filename=None):
                 return 'Error when writing the file. Please contact us if the error persists.'
         else:
             upload = request.files['file']
-            filename = guid + '.' + ext
+            filename = guid + '.txt'
             if (filename is None) or (filename == ''):
                 add_flash_message("Error with filename")
                 return "Error when generating the filename. Please contact us if the error persists."
