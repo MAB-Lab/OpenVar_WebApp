@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<title>OpenVar Home Page</title>
-		<link rel="stylesheet" href="static/css/Home_stylesheet.ca">
-	</head>
-	
-	<body>
+
+
 		<div class="navbar">
 			<a class= 'OpenVar_logo' href="{{ url_for('home') }}" title="OpenVar Home"><img id="OpenVar_logo" src="static/images/Logo.png" alt="OpenVar logo"></a>
 			<a class='Run_analysis' href="{{ url_for('submit') }}" title="Run Analysis">Run Analysis</a>
@@ -16,5 +9,5 @@
 		
 		{% block content %}
 		{% endblock %}
-	</body>
-</html>
+
+

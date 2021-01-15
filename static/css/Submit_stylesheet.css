@@ -53,7 +53,7 @@ body{
 /*Submission form*/
 .submit_grid{
 	display:grid;
-	grid-template-columns: 5% 1fr 1fr 1fr 5%;
+	grid-template-columns: 5% 1fr 5%;
 	grid-template-rows: auto auto auto auto auto auto 15px;
 	grid-gap:20px;
 	font-family:Helvetica, Arial, sans-serif;
@@ -61,7 +61,7 @@ body{
 	color:#444;
 }
 .submit_grid > h1{
-	grid-column: 2 / span 3;
+	grid-column: 2 / 3;
 	grid-row: 1 / 2;
 	font-size:25px;
 	font-weight:bold;
@@ -70,8 +70,77 @@ body{
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	background-color:#e1f9f3;
 }
-.form__species{
+.form__user{
 	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	display:grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: auto auto auto;
+	grid-gap: 20px;
+}
+.form__info{
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+	padding: 30px 30px;
+	font-size:14px;
+	font-weight:normal;
+	text-align:center;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#e1f9f3;
+	margin: 0 0 0;
+}
+.form__email{
+	grid-column: 2 / 3;
+	grid-row: 1 / 2;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	padding: 20px 20px;
+	background-color:#fdfddb;
+	display:grid;
+	grid-template-rows:auto auto auto;
+	grid-gap: 10px;
+}
+.form__email > label{
+	grid-row: 1 / 2;
+	font-size:16px;
+	font-weight:bold;
+	text-align:center;
+}
+.form__email > input{
+	grid-row: 2 / 3;
+}
+.form__email > div{
+	grid-row: 3 / 4;
+	font-size:14px;
+	font-weight:bold;
+	color:red;
+}
+.form__studyname{
+	grid-column: 3 / 4;
+	grid-row: 1 / 2;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	padding: 20px 20px;
+	background-color:#fdfddb;
+	display:grid;
+	grid-template-rows: auto auto auto;
+	grid-gap: 10px;
+}
+.form__studyname > label{
+	grid-row: 1 / 2;
+	font-size:16px;
+	font-weight:bold;
+	text-align:center;
+}
+.form__studyname > input{
+	grid-row: 2 / 3;
+}
+.form__studyname > div{
+	grid-row: 3 / 4;
+	font-size:14px;
+	font-weight:bold;
+	color:red;
+}
+.form__species{
+	grid-column: 1 / 2;
 	grid-row: 2 / 3;
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	padding: 20px 20px;
@@ -90,12 +159,12 @@ body{
 	grid-row: 2 / 3;
 }
 .form__genome{
-	grid-column: 3 / 4;
+	grid-column: 2 / 3;
 	grid-row: 2 / 3;
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	padding: 20px 20px;
 	background-color:#fdfddb;
-	display:none;
+	display:grid;
 	grid-template-rows:auto auto;
 	grid-gap:10px;
 }
@@ -108,14 +177,13 @@ body{
 .form__genome > select{
 	grid-row: 2 / 3;
 }
-
 .form__build{
-	grid-column: 4 / 5;
+	grid-column: 3 / 4;
 	grid-row: 2 / 3;
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	padding: 20px 20px;
 	background-color:#fdfddb;
-	display:none;
+	display:grid;
 	grid-template-rows:auto auto;	
 	grid-gap:10px;
 }
@@ -128,30 +196,46 @@ body{
 .form__build > select{
 	grid-row: 2 / 3;
 }
-.form__vcf{
-	grid-column: 2 / span 3;
-	grid-row: 3 / 5;
+.form__submit__btn{
+	grid-column: 2 / 3;
+	grid-row: 3 / 4;
+	font-size:16px;
+	font-weight:bold;
+	padding:10px 10px;
+	background-color:#ffffff;
+	color: #444;
+	border: 2px solid #444;
+	border-radius: 8px;
+}
+.form__submit__btn:hover{
+	cursor:pointer;
+	background-color:#e1f9f3;
+	color: #033aa1;
+	border: 2px solid #033aa1
+}
+
+.form__upload{
+	grid-column: 2 / 3;
+	grid-row: 4 / 5;
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	padding: 20px 0;
 	background-color: #fdfddb;
-	display:none;
-	grid-template-rows: auto auto auto;
-	grid-template-columns: auto auto;
+	display:grid;
+	grid-template-rows: auto auto;
+	grid-template-columns: 1fr 1fr;
 	grid-gap: 15px;
+	overflow:hidden;
 }
-.form__vcf > label{
+.form__upload > label{
 	grid-row: 1 / 2;
-	grid-column: 1 / span 2;
+	grid-column: 1 / 3;
 	font-size:16px;
 	font-weight:bold;
 	text-align:center;
 }
-.form__vcf > label > a{
-	color:#033aa1;
-	text-decoration:none;
-}
-.form__vcf > input{
+.form__upload > input[name="file_upload-vcf"]{
 	grid-row: 2 / 3;
+	grid-column: 1 / 2;
 	padding:10px;
 	place-self:center end;
 	background-color:#ffffff;
@@ -162,56 +246,76 @@ body{
 	cursor:pointer;
 	float:right;
 }
-.form__vcf > input[name="Upload VCF"]{
-	place-self:center start;
+.form__upload > input[name="upload_submit"]{
+	grid-row: 2 / 3;
+	grid-column: 2 / 3;
+	place-self: center start;
+	font-size:14px;
+	font-weight:normal;
 }
-.form__vcf > input:last-child:hover{
-	background-color: #bde2f8;
-	color: #033aa1;
-}
-.form__vcf > div{
-	grid-row: 3 / 4;
-	grid-column: 1 / span 2;
-	place-self:center;
-}
-.form__submit{
-	grid-column: 3 / 4;
-	grid-row: 5 / 6;
-	padding:10px 0;
-	background-color:#ffffff;
-	color: #444;
-	font-size:16px;
-	font-weight:bold;
+.form__upload > input[name="upload_submit"]:hover{
+	background-color: #ffffff;
+	color: #76d59f;
 	border: 2px solid #033aa1;
-	border-radius: 8px;
 	cursor:pointer;
-	float:right;
 }
-.form__submit:hover{
-	background-color: #bde2f8;
-	color:#033aa1;
+.progress-bar{
+	grid-row: 5 / 6;
+	grid-column: 2 / 3;
+	width: 0%;
+	height: 25px;
+	background-color:#76d59f;
+	place-self:left;
+	text-align:center;
+	line-height: 27px;
+	color: #444;
 }
-.form__success{
-	grid-column: 2 / span 3;
+.alert__upload_success{
+	grid-row: 3 / 4;
+	grid-column: 2 / 3;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#ccffcc;
+	text-align:center;
+	padding: 20px 20px;
+	font-size: 14px;
+	font-weight:bold;
+	color:green;
+	display:none;
+}
+.alert__upload_error{
+	grid-row: 3 / 4;
+	grid-column: 2 / 3;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#ffe6e6;
+	border: 2px solid red;
+	text-align:center;
+	padding: 20px 20px;
+	font-size: 14px;
+	font-weight:bold;
+	color:red;
+	display:none;
+}
+.alert__submit_success{
+	grid-column: 2 / 3;
 	grid-row: 6 / 7;
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	background-color:#e1f9f3;
 	padding:20px 0;
 	display:none;
-	grid-template-rows:auto auto;
+	grid-template-rows:auto auto auto auto;
 }
-.form__success > h1{
+.alert__submit_success > h1{
 	grid-row: 1 / 2;
 	font-size:20px;
 	font-weight:bold;
 	text-align:center;
 }
-.form__success > p{
+.alert__submit_success > p{
 	grid-row: 2 / 3;
 	font-size:16px;
 	text-align:center;
 }
-.form__success > p > a{
+.alert__submit_success > p > a{
 	color:#033aa1;
 	text-decoration:none;
 }

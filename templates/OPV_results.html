@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>OpenVar Results</title>
+		<link rel="stylesheet" href="static/css/Results_stylesheet.css" />
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	</head>
+	<body>
+
+		{% extends "OPV_navbar.html" %}
+		{% block content %}
+
+		<p>The results will be in this template</p>
+		{{ message }}
+
+		<div class="results__grid">
+			<div class="results__header">
+				<h1>OpenVar Results Summary</h1>
+				<h1 name="header__study_name">Study name: </h1>
+			</div>
+
+			<div class="results__stats">
+				<h1>General statistics:</h1>
+				<p>Total number of variants</p>
+				<p>Total number of genes affected</p>
+				<p>Total number of proteins affected</p>
+				<p>Total number of reference proteins affected</p>
+				<p>Total number of alternative proteins affected</p>
+			</div>
+
+			<div class="results__chr">
+				<p>Table of number of variants per chr</p>
+			</div>
+
+			<div class="results__gene">
+				<p>Table of Mutation/kb for the top 10 genes</p>
+				<p>See all genes</p>
+				<p>Graph</p>
+			</div>
+
+			<div class="results__protein">
+				<p>Number of variants with highest impact in a reference protein:</p>
+				<p>Number of variants with highest impact in an alternative protein:</p>
+				<p>Table with fold-change</p>
+				<p>Graph fold-change</p>
+				<p>Graph number of variants per impact</p>
+			</div>
+
+			<div class="results__altHotSpot">
+				<p>Table of highest impact percent and alt IP_ per gene</p>
+				<p>See all genes</p>
+				<p>Graph</p>
+			</div>
+
+		</div>
+
+
+		<div class="footer">
+			<div>If you have any question, please <a href="https://openprot.org/p/ng/contactUs" title="Contact us" target="_blank">contact us</a>.</div>
+			<div><a href="https://twitter.com/intent/tweet?button_hashtag=OpenVar&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #OpenVar</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+			<div>
+				<p>OpenVar was developped by members of Pr Xavier Roucou lab:<br>Dr Marie A Brunet, Sebastien Leblanc and Noe Guilloy.</p>
+			</div>
+			<div class="Sponsors">
+				<img src="static/images/CIHR_chair.png" alt="CIHR Research Chair">
+				<img src="static/images/Sherbrooke.jpg" alt="Universite de Sherbrooke">
+				<img src="static/images/CalculQuebec.png" alt="Calcul Quebec">
+				<img src="static/images/CalculCanada.png" alt="Calcul Canada">
+			</div>
+		</div>
+
+		{% endblock %}
+
+	</body>
+</html>
+
