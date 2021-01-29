@@ -7,52 +7,114 @@
 		<title>OpenVar Results</title>
 		<link rel="stylesheet" href="static/css/Results_stylesheet.css" />
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		<script src="static/js/OPV_results.js"></script>
 	</head>
 	<body>
 
 		{% extends "OPV_navbar.html" %}
 		{% block content %}
 
-		<p>The results will be in this template</p>
-		{{ message }}
-
 		<div class="results__grid">
+
 			<div class="results__header">
-				<h1>OpenVar Results Summary</h1>
-				<h1 name="header__study_name">Study name: </h1>
+				<h1>Openvar Results Summary</h1>
+				<h1 id="header__study_name"></h1>
+			</div>
+
+			<div class="error__grid">
+				<div class="no_results__message"></div>
+				<video id="running_animation" width="320" height="240" autoplay><source src="static/animations/still_working.mp4" type="video/mp4">Your browser does not support the animation.</video>
+				<img src="static/images/deleted_files.png" alt="Bin" id="deleted_file_img">
+				<img src="static/images/not_launched.jpg" alt="Don't panic" id="not_launched_img">
 			</div>
 
 			<div class="results__stats">
-				<h1>General statistics:</h1>
-				<p>Total number of variants</p>
-				<p>Total number of genes affected</p>
-				<p>Total number of proteins affected</p>
-				<p>Total number of reference proteins affected</p>
-				<p>Total number of alternative proteins affected</p>
+				<h1>General statistics</h1>
+				<table id="results_stats">
+					<tr></tr>
+				</table>
 			</div>
 
 			<div class="results__chr">
-				<p>Table of number of variants per chr</p>
+				<h1>Chromosome statistics</h1>
+				<table id="results_chr">
+					<thead>
+						<th>Chromosome</th>
+						<th>Number of variants</th>
+					</thead>
+					<tbody id="results_chr_tbody">
+					</tbody>
+				</table>
+				<canvas id="chrom__pieChart"></canvas>
 			</div>
 
 			<div class="results__gene">
-				<p>Table of Mutation/kb for the top 10 genes</p>
-				<p>See all genes</p>
-				<p>Graph</p>
+				<h1>Most affected genes</h1>
+				<table id="results_gene">
+					<thead>
+						<th>Gene</th>
+						<th>Mutations / kb</th>
+					</thead>
+					<tbody id="results_gene_tbody">
+					</tbody>
+				</table>
+				<div class="toggle_btn__genes">
+					<button id="see_100__genes">See top 100 genes</button>
+					<a id="see_all__genes" href="" target="_blank" title="See all genes">See all genes</a>
+					<button id="collapse__genes">Collapse</button>
+				</div>
+				<div class="charts__gene">
+					<canvas id="gene__barChart"></canvas>
+				</div>
 			</div>
 
 			<div class="results__protein">
-				<p>Number of variants with highest impact in a reference protein:</p>
-				<p>Number of variants with highest impact in an alternative protein:</p>
-				<p>Table with fold-change</p>
-				<p>Graph fold-change</p>
-				<p>Graph number of variants per impact</p>
+				<h1>Functional effect prediction statistics</h1>
+				<table id="results_prot_stats">
+					<tbody id="results_prot_tbody">
+					</tbody>
+				</table>
+				<table id="results_altFC">
+					<thead>
+						<th></th>
+						<th>Low impact</th>
+						<th>Medium impact</th>
+						<th>High impact</th>
+					</thead>
+					<tbody id="results_protFC_tbody">
+					</tbody>
+				</table>
+				<div class="charts__protFC">
+					<canvas id="prot__FCbarChart"></canvas>
+				</div>
+				<div class="charts__impact">
+					<canvas id="prot__ImpactbarChart"></canvas>
+				</div>
 			</div>
 
 			<div class="results__altHotSpot">
-				<p>Table of highest impact percent and alt IP_ per gene</p>
-				<p>See all genes</p>
-				<p>Graph</p>
+				<h1>Mutational hotspots on alternative proteins</h1>
+				<div class="responsive_table">
+					<table id="results_hotspots">
+						<thead>
+							<th>Gene</th>
+							<th>Percentage of gene variants in alternative protein</th>
+							<th>Variants in alternative protein</th>
+							<th>Alternative protein accessions (<a href="https://openprot.org/" target="_blank" title="Go to OpenProt">OpenProt</a>)</th>
+						</thead>
+						<tbody id="results_hotspots_tbody">
+						</tbody>
+					</table>
+				</div>
+				<div class="toggle_btn__hotspots">
+					<button id="see_100__hotspots">See top 100 genes</button>
+					<a id="see_all__hotspots" href="" target="_blank" title="See all genes">See all genes</a>
+					<button id="collapse__hotspots">Collapse</button>
+				</div>
+				<div class="charts__hotspot">
+					<canvas id="hotspot__barChart"></canvas>
+				</div>
 			</div>
 
 		</div>
