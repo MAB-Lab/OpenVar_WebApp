@@ -7,7 +7,7 @@ $(document).ready(function() {
 	species_select.onchange = function() {
 		species = species_select.value;
 		
-		fetch("/genome/" + species).then(function(response) {
+		fetch("/openvar/genome/" + species).then(function(response) {
 			response.json().then(function(data) {
 				let optionHTML = "";
 
@@ -61,7 +61,7 @@ $(document).ready( function() {
 					return myxhr;
 				},
 				
-				url:'/upload_file',
+				url:'/openvar/upload_file',
 				data: form_data,
 				processData: false,
 				type: 'POST',
@@ -112,7 +112,7 @@ $(document).ready( function() {
 		});
 		
 		$.ajax({
-			url: '/opv_submit',
+			url: '/openvar/opv_submit',
 			type: 'POST',
 			data: $('#user_input__submitform').serialize(),
 			success: function(response) {
