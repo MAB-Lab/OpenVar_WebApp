@@ -111,24 +111,24 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
 
 #APP ROUTES
 # Home page
-@app.route('/', methods=["GET"])
+@app.route('/openvar/', methods=["GET"])
 def home():
     return render_template("OPV_home.html")
 
 # Help page
-@app.route('/help')
+@app.route('/openvar/help')
 def help():
     return render_template("OPV_help.html")
 
 # Submit page
-@app.route('/submit', methods=["GET"])
+@app.route('/openvar/submit', methods=["GET"])
 def submit():
     form=CombinedForm()
     form.user_input.genome.choices = [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")]
     return render_template("OPV_submit.html", form=form)
 
 # Route for user input form submission
-@app.route('/opv_submit', methods=['POST'])
+@app.route('/openvar/opv_submit', methods=['POST'])
 def process_userinput():
     form = CombinedForm(request.form)
     if form.user_input.validate(form.user_input):
@@ -146,12 +146,12 @@ def process_userinput():
         return jsonify({'outcome': 'error', 'data': form.errors})
 
 # Results page
-@app.route('/<guid>')
+@app.route('/openvar/<guid>')
 def get_results(guid):
     return render_template("OPV_results.html")
 
 # Results as Json
-@app.route('/<guid>/json')
+@app.route('/openvar/<guid>/json')
 def get_results_json(guid):
     results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
     output_dir = os.path.join(results_dir, 'output')
@@ -221,7 +221,7 @@ def get_results_json(guid):
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'deleted'})
 
 # Routes for display all
-@app.route('/<guid>/all_genes', methods = ['GET'])
+@app.route('/openvar/<guid>/all_genes', methods = ['GET'])
 def get_all_genes(guid):
     results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
     output_dir = os.path.join(results_dir, 'output')
@@ -233,7 +233,7 @@ def get_all_genes(guid):
     else:
         return "Error: directory not found."
 
-@app.route('/<guid>/hotspots_all_genes', methods = ['GET'])
+@app.route('/openvar/<guid>/hotspots_all_genes', methods = ['GET'])
 def get_all_hotspots(guid):
     results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
     output_dir = os.path.join(results_dir, 'output')
@@ -247,7 +247,7 @@ def get_all_hotspots(guid):
         return 'Error: directory not found.'
 
 # Route for upload processing
-@app.route('/upload_file', methods=['POST'])
+@app.route('/openvar/upload_file', methods=['POST'])
 def upload():
     upload = request.files['file']
     if upload:
@@ -302,7 +302,7 @@ def upload():
         return jsonify({'outcome': 'error', 'error': 'No file was uploaded.'})
 
 # Route for dynamic genome version display
-@app.route('/genome/<species>')
+@app.route('/openvar/genome/<species>')
 def genome(species):
     genomes = {"human": [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")], "mouse": [("mm39", "GRCm39 / mm39"), ("mm10", "GRCm38 / mm10")], 
             "rat": [("rn6", "RGSC6.0 / rn6"), ("rn5", "RGSC5.0 / rn5")], "fruit fly": [("dm6", "BDGP R6 / dm6"), ("dm5", "BDGP R5 / dm5")]}
