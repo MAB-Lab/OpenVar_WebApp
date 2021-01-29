@@ -18,6 +18,15 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import *
 import zipfile
 
+
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024    # 2Gb limit
+app.config['CHUNK_SIZE'] = 10240
+app.config['UPLOAD_EXTENSIONS'] = ['.vcf', '.txt', '.tsv', '.csv']
+app.config['UPLOAD_PATH'] = 'uploads'
+app.config['RESULTS_PATH'] = 'results'
+app.config['JSON_SORT_KEYS'] = False
+app.secret_key = 'abcd1234'
+
 # Setup app and broker
 app = Flask(__name__)
 redis_broker = RedisBroker(host="127.0.0.1")
@@ -320,12 +329,6 @@ def handle_oserror(oserror):
 
 # APP CONFIGURATION
 if __name__ == '__main__':
-    app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024    # 2Gb limit
-    app.config['CHUNK_SIZE'] = 10240
-    app.config['UPLOAD_EXTENSIONS'] = ['.vcf', '.txt', '.tsv', '.csv']
-    app.config['UPLOAD_PATH'] = 'uploads'
-    app.config['RESULTS_PATH'] = 'results'
-    app.config['JSON_SORT_KEYS'] = False
-    app.secret_key = 'abcd1234'
+
     port = int(os.getenv("PORT", 5000))
     app.run(host = '0.0.0.0', debug=True, port=port)
