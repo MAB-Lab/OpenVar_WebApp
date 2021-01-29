@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>OpenVar</title>
-		<link rel="stylesheet" href="/openvar/static/css/Home_stylesheet.css">
+		<link rel="stylesheet" href="static/css/Home_stylesheet.css">
 	</head>
 
 	
@@ -16,18 +16,18 @@
 
 		<div class="container">
 			<div class="Intro">
-				<img src="/openvar/static/images/Logo.png" alt="OpenVar logo">
+				<img src="static/images/Logo.png" alt="OpenVar logo">
 				<p>OpenVar is the first tool for genomic variant annotation and functional effect prediction supporting deep open reading frame (ORF) annotation and polycistronic annotation of Human, Mouse, Rat and Fruit fly transcripts. <br>OpenVar builds on the well-known and extensively used SNPEff tool (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/pmid/22728672/" title="Cingolani et al, fly, 2012" target="_blank">Cingolani et al., 2012</a>), but also offers the possibility to predict variant effect in alternative ORFs as defined in <a href="https://openprot.org/" title="Go to OpenProt" target="_blank">OpenProt</a> (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5932603/" title="Brunet et al, NAR, 2019" target="_blank">Brunet et al., 2019</a>).</p>
 				<a href="{{ url_for('submit') }}" title="Run Analysis">Run analysis now!</a>
 			</div>
 			<div class="ModAnn">
 				<h1>Current annotation model</h1>
-				<img id="CurrMod" src="/openvar/static/images/Current_model.png" alt="Current model">
+				<img id="CurrMod" src="static/images/Current_model.png" alt="Current model">
 				<p>With current genome annotations, about 75% of genomic variants are deemed inconsequential (ICV). These ICV correspond to variants falling in allegedly non-coding regions, such as UTRs or ncRNAs, or yielding synonymous mutations (silent). Yet, some ICV have been strongly associated with pathologies and only about 30-40 % can be explained with hypotheses formulated under a monocistronic annotation of the human genome.</p>
 			</div>
 			<div class="ModOP">
 				<h1>OpenProt annotation model</h1>
-				<img id="OPMod" src="/openvar/static/images/OpenProt_model.png" alt="OpenProt model">
+				<img id="OPMod" src="static/images/OpenProt_model.png" alt="OpenProt model">
 				<p>By allowing annotation of multiple ORF per transcript (polycistronic annotation), OpenProt provides a more complex yet more comprehensive view of the coding potential of human genes. Early studies suggest that up to 30% of ICV could be explained by their consequence on a currently unannotated protein.</p>
 			</div>
 			<div class="FunFact">
@@ -51,10 +51,10 @@
 				<p>OpenVar was developped by members of Pr Xavier Roucou lab:<br>Dr Marie A Brunet, Sebastien Leblanc and Noe Guilloy.</p>
 			</div>
 			<div class="Sponsors">
-				<img src="/openvar/static/images/CIHR_chair.png" alt="CIHR Research Chair">
-				<img src="/openvar/static/images/Sherbrooke.jpg" alt="Universite de Sherbrooke">
-				<img src="/openvar/static/images/CalculQuebec.png" alt="Calcul Quebec">
-				<img src="/openvar/static/images/CalculCanada.png" alt="Calcul Canada">
+				<img src="static/images/CIHR_chair.png" alt="CIHR Research Chair">
+				<img src="static/images/Sherbrooke.jpg" alt="Universite de Sherbrooke">
+				<img src="static/images/CalculQuebec.png" alt="Calcul Quebec">
+				<img src="static/images/CalculCanada.png" alt="Calcul Canada">
 			</div>
 		</div>
 
