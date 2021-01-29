@@ -22,8 +22,8 @@ import zipfile
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024    # 2Gb limit
 app.config['CHUNK_SIZE'] = 10240
 app.config['UPLOAD_EXTENSIONS'] = ['.vcf', '.txt', '.tsv', '.csv']
-app.config['UPLOAD_PATH'] = 'uploads'
-app.config['RESULTS_PATH'] = 'results'
+app.config['UPLOAD_PATH'] = '/open-var-deposit/uploads'
+app.config['RESULTS_PATH'] = '/open-var-deposit/results'
 app.config['JSON_SORT_KEYS'] = False
 app.secret_key = 'abcd1234'
 
@@ -77,7 +77,7 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
             with open(error_file, 'w') as f:
                 f.write('Your file did not pass the VCF format validation step. Please check your file format before resubmitting the analysis.')
         else:
-            opv = OpenVar(snpeff_path = '/home/xroucou_group/echange_de_fichiers/snpEff/', 
+            opv = OpenVar(snpeff_path = '/open-var-deposit/snpEff/', 
                     vcf = vcf,
                     annotation = annotation)
             print('opv object has been created {}'.format(opv.output_dir))
