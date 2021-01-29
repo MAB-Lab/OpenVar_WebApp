@@ -18,7 +18,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import *
 import zipfile
 
-
+# Setup app
+app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024    # 2Gb limit
 app.config['CHUNK_SIZE'] = 10240
 app.config['UPLOAD_EXTENSIONS'] = ['.vcf', '.txt', '.tsv', '.csv']
@@ -27,8 +28,7 @@ app.config['RESULTS_PATH'] = '/open-var-deposit/results'
 app.config['JSON_SORT_KEYS'] = False
 app.secret_key = 'abcd1234'
 
-# Setup app and broker
-app = Flask(__name__)
+# Setup broker
 redis_broker = RedisBroker(host="127.0.0.1")
 dramatiq.set_broker(redis_broker)
 
