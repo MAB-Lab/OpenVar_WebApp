@@ -13,7 +13,7 @@ $(document).ready(function() {
 	var guid = location.pathname.substr(8);
 	console.log(guid);
 	
-	fetch(guid + "/json").then( function(response) {
+	fetch("/openvar/" + guid + "/json").then( function(response) {
 		response.json().then( function(data) {
 			if (data.outcome == 'success') {
 
@@ -53,7 +53,7 @@ $(document).ready(function() {
 				});
 
 				$('.results__gene').css('display', 'grid');
-				$('#see_all__genes').attr('href', (guid + '/all_genes'));
+				$('#see_all__genes').attr('href', ("/openvar/" + guid + '/all_genes'));
 				$(function(){
 					$.each(data.top10_genes, function(key, item){
 						$('<tr>').append(
@@ -149,7 +149,7 @@ $(document).ready(function() {
 				});
 
 				$('.results__altHotSpot').css('display', 'grid');
-				$('#see_all__hotspots').attr('href', (guid + '/hotspots_all_genes'));
+				$('#see_all__hotspots').attr('href', ("/openvar/" + guid + '/hotspots_all_genes'));
 				$(function() {
 					$.each(data.hotspots_top10, function(key, item){
 						$('<tr>').append(
