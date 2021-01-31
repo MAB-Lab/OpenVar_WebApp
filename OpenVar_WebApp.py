@@ -136,7 +136,7 @@ def process_userinput():
     form = CombinedForm(request.form)
     if form.user_input.validate(form.user_input):
         guid = form.user_input.guid.data
-        link = '/' + guid
+        link = '/openvar/' + guid
         email = form.user_input.email.data
         study_name = form.user_input.study_name.data
         genome_version = form.user_input.genome.data
