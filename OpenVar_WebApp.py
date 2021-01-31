@@ -218,7 +218,7 @@ def get_results_json(guid):
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'failed'})
     else:
         if os.path.exists(results_dir):
-            message = 'Your analysis is still running. Please check again later.'
+            message = 'Your analysis is running. Please check again later.'
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'running'})
         elif os.path.exists(input_file):
             message = 'Your analysis is in the queue. Please check again later.'
