@@ -11,13 +11,17 @@ $(document).ready(function() {
 	$('#not_launched_img').hide();
 
 	var guid = location.pathname.substr(8);
-	console.log(guid);
 	
 	fetch("/openvar/" + guid + "/json").then( function(response) {
 		response.json().then( function(data) {
 			if (data.outcome == 'success') {
 
 				$('#header__study_name').text('Study: ' + data.study_name).show();
+
+				$('.results__downloads').css('display', 'grid');
+				$('#dwnld__all').attr("href", "/openvar/" + guid + "/download_all");
+				$('#dwnld__annvcf').attr("href", "/openvar/" + guid + "/download_annvcf");
+				$('#dwnld__tsv').attr("href", "/openvar/" + guid + "/download_tsv");
 
 				$('.results__stats').css('display', 'grid');
 				$(function() {
@@ -216,5 +220,4 @@ $(document).ready(function() {
 	
 	});
 });
-
 

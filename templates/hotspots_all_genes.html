@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>OpenVar Results - all gene hotspots table</title>
+	</head>
+	
+	<body>
+		<table>
+			<thead>
+				<tr>
+					<th>Gene</th>
+					<th>Portion of gene variants in alternative protein</th>
+					<th>Variants in alternative protein</th>
+					<th>Alternative protein accessions (OpenProt)</th>
+				</tr>
+			</thead>
+	
+			<tbody>
+			{% for key, value in data.items() %}
+				<tr>
+					<td> {{ key }} </td>
+					<td> {{ value[0] }} </td>
+					<td> {{ value[1] }} </td>
+					<td> {{ value[2] }} </td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
+
+

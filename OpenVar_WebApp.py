@@ -3,7 +3,7 @@ import os
 import sys
 import uuid
 from io import StringIO
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
@@ -63,7 +63,7 @@ def zipdir(path, ziph):
             ziph.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
 
 # dramatiq actors
-@dramatiq.actor(max_retries = 2, notify_shutdown=True, time_limit=3600000)
+@dramatiq.actor(max_retries = 2, notify_shutdown=True, time_limit=18000000)
 def run_openvar(guid, study_name, genome_version, annotation, upload_path, result_path):
     try:
         print('Launching OpenVar...')
@@ -182,8 +182,8 @@ def get_results_json(guid):
                 prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
             else:
                 prot_stats[key] = summary['Protein Level'][key]
-        hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
-        sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], -len(gene[1][2]), gene[1][1]), reverse=True)}
+        hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts'], summary['Mutational hotspots on altORFs'][x]['ave_impact']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+        sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], gene[1][3], gene[1][1], -len(gene[1][2])), reverse=True)}
         hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
         hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
 
@@ -227,6 +227,26 @@ def get_results_json(guid):
             message = 'Your files were removed from our server 10 days after completion of the analysis.'
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'deleted'})
 
+# Routes for downloads
+@app.route('/openvar/<guid>/download_all', methods = ['GET'])
+def download_all(guid):
+    results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
+    return send_from_directory(results_dir, 'OpenVar_output.zip', as_attachment = True)
+
+@app.route('/openvar/<guid>/download_annvcf', methods=['GET'])
+def download_annvcf(guid):
+    results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
+    output_dir = os.path.join(results_dir, 'output')
+    filename = guid + '.ann.vcf'
+    return send_from_directory(output_dir, filename, as_attachment = True)
+
+@app.route('/openvar/<guid>/download_tsv', methods=['GET'])
+def download_tsv(guid):
+    results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
+    output_dir = os.path.join(results_dir, 'output')
+    filename = [f for f in os.listdir(output_dir) if os.path.isfile(os.path.join(output_dir, f)) and '_max_impact.tsv' in f][0]
+    return send_from_directory(output_dir, filename, as_attachment = True)
+
 # Routes for display all
 @app.route('/openvar/<guid>/all_genes', methods = ['GET'])
 def get_all_genes(guid):
@@ -235,8 +255,8 @@ def get_all_genes(guid):
     summary_path = os.path.join(output_dir, 'summary.pkl')
     if os.path.exists(summary_path):
         summary = pickle.load(open(summary_path, 'rb'))
-        all_genes = summary['Gene Level']
-        return all_genes
+        all_genes = {k[0]: k[1] for k in summary['Gene Level']}
+        return render_template("all_genes_stats.html",  data = all_genes)
     else:
         return "Error: directory not found."
 
@@ -247,9 +267,9 @@ def get_all_hotspots(guid):
     summary_path = os.path.join(output_dir, 'summary.pkl')
     if os.path.exists(summary_path):
         summary = pickle.load(open(summary_path, 'rb'))
-        hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['alts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
-        sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda item: item[1][0], reverse=True)}
-        return sorted_hotspots
+        hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts'], summary['Mutational hotspots on altORFs'][x]['ave_impact']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+        sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], gene[1][3], gene[1][1], -len(gene[1][2])), reverse=True)}
+        return render_template("hotspots_all_genes.html", data = sorted_hotspots)
     else:
         return 'Error: directory not found.'
 
@@ -263,6 +283,8 @@ def upload():
             return jsonify({'outcome': 'error', 'error': 'No file selected. Please select a file to upload.'})
         elif submitted_filename[-4:] not in app.config['UPLOAD_EXTENSIONS']:
             return jsonify({'outcome': 'error', 'error': 'Only .vcf, .tsv, .txt and .csv formats are accepted.'})
+        elif len([name for name in os.listdir(app.config['UPLOAD_PATH']) if os.path.isfile(os.path.join(app.config['UPLOAD_PATH'], name))]) > 50:
+            return jsonify({'outcome': 'error', 'error': "We're sorry but we are experiencing a high demand at the moment. Try again later, but if this message persists, please contact us."})
         else:
             #Check if there is content length information in request.headers
             if "Content-Length" not in request.headers:

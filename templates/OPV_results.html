@@ -29,6 +29,13 @@
 				<img src="/openvar/static/images/not_launched.jpg" alt="Don't panic" id="not_launched_img">
 			</div>
 
+			<div class="results__downloads">
+				<h1>Download results</h1>
+				<a id="dwnld__all" href="{{ url_for('download_all', guid ="") }}">Download all results</a>
+				<a id="dwnld__annvcf" href="{{ url_for('download_annvcf', guid="") }}">Download annotated VCF</a>
+				<a id="dwnld__tsv" href="{{ url_for('download_tsv', guid="") }}">Download table of max impact annotations</a>
+			</div>
+
 			<div class="results__stats">
 				<h1>General statistics</h1>
 				<table id="results_stats">
