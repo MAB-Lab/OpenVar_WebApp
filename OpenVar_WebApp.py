@@ -98,7 +98,10 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
                 print('analyzing all variants')
                 opvr.compute_summary_stats()
                 print('summary stats were computed')
-
+                print('Moving input file...')
+                input_file = os.path.join(upload_path, (guid+'.vcf'))
+                os.rename(input_file, os.path.join(opv.output_dir, 'input_vcf.vcf'))
+                print('Creating folder for downloads...')
                 zipf = zipfile.ZipFile(os.path.join(vcf.results_dir, 'OpenVar_output.zip'), 'w', zipfile.ZIP_DEFLATED)
                 zipdir(opvr.output_dir, zipf)
                 zipf.close()
@@ -153,6 +156,7 @@ def get_results(guid):
 # Results as Json
 @app.route('/openvar/<guid>/json')
 def get_results_json(guid):
+    input_file = os.path.join(app.config['UPLOAD_PATH'], (guid + '.vcf'))
     results_dir = os.path.join(app.config['RESULTS_PATH'], guid)
     output_dir = os.path.join(results_dir, 'output')
     summary_path = os.path.join(output_dir, 'summary.pkl')
@@ -215,6 +219,9 @@ def get_results_json(guid):
     else:
         if os.path.exists(results_dir):
             message = 'Your analysis is still running. Please check again later.'
+            return jsonify({'outcome': 'error', 'message': message, 'tag': 'running'})
+        elif os.path.exists(input_file):
+            message = 'Your analysis is in the queue. Please check again later.'
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'running'})
         else:
             message = 'Your files were removed from our server 10 days after completion of the analysis.'
