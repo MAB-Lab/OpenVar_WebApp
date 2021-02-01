@@ -56,9 +56,18 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
 
+def send_email(to, subject, mg_domain, mg_key, plain=None, from_address=None):
+    if from_address is None:
+        from_address = "notifications@saltorf.com"
+    data = {"from": from_address, "to": to, "subject": subject}
+    if plain is not None:
+        data["text"] = plain
+    response = requests.post('https://api.mailgun.net/v2/{}/messages'.format(mg_domain), data=data, auth=('api', mg_key))
+    return response.status_code
+
 # dramatiq actors
 @dramatiq.actor(max_retries = 2, notify_shutdown=True, time_limit=18000000)
-def run_openvar(guid, study_name, genome_version, annotation, upload_path, result_path):
+def run_openvar(guid, study_name, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
     try:
         print('Launching OpenVar...')
         vcf = SeqStudy(data_dir = upload_path, 
@@ -100,6 +109,13 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
                 zipdir(opvr.output_dir, zipf)
                 zipf.close()
                 print('Output zipped. Analysis completed!')
+                print('Sending email...')
+                subject = "Your OpenVar results"
+                content = 'Thank you for using OpenVar! Your results are available at this address: www.openprot.org/openvar/' + guid
+                sent = send_email(email, subject, mg_domain, mg_key, plain = content)
+                print(sent)
+                print('Done!')
+
 
     except:
         error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
@@ -136,7 +152,7 @@ def process_userinput():
         genome_version = form.user_input.genome.data
         annotation = form.user_input.build.data
         
-        run_openvar.send(guid, study_name, genome_version, annotation, app.config['UPLOAD_PATH'], app.config['RESULTS_PATH'])
+        run_openvar.send(guid, study_name, genome_version, annotation, app.config['UPLOAD_PATH'], app.config['RESULTS_PATH'], email, app.config['MG_DOMAIN'], app.config['MG_KEY'])
 
         return jsonify({'outcome': 'success', 'guid': guid, 'link': link, 'email': email, 'study_name': study_name})
     else:
