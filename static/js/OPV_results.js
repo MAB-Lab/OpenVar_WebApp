@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 	var guid = location.pathname.substr(8);
 	
-	fetch("/openvar/" + guid + "/json").then( function(response) {
+	fetch("/openvarZAZA/" + guid + "/json").then( function(response) {
 		response.json().then( function(data) {
 			if (data.outcome == 'success') {
 
