@@ -10,7 +10,8 @@ $(document).ready(function() {
 	$('#deleted_file_img').hide();
 	$('#not_launched_img').hide();
 
-	var guid = location.pathname.substr(8);
+	var guid = location.pathname.substr(9);
+	console.log(guid)
 	
 	fetch("/openvar/" + guid + "/json").then( function(response) {
 		response.json().then( function(data) {
