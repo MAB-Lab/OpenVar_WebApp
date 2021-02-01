@@ -17,6 +17,7 @@ import pickle
 import matplotlib.pyplot as plt
 from matplotlib.colors import *
 import zipfile
+import requests
 
 # Setup app
 app = Flask(__name__, static_url_path='/openvar/static')
@@ -369,6 +370,5 @@ def handle_oserror(oserror):
 
 # APP CONFIGURATION
 if __name__ == '__main__':
-
     port = int(os.getenv("PORT", 5000))
     app.run(host = '0.0.0.0', debug=True, port=port)
