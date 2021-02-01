@@ -20,7 +20,8 @@ import zipfile
 
 # Setup app
 app = Flask(__name__, static_url_path='/openvar/static')
-app.config.from_envvar('OPENVAR_SETTINGS_FILE')
+if "OPENVAR_SETTINGS_FILE" in os.environ:
+    app.config.from_envvar('OPENVAR_SETTINGS_FILE')
 
 # Setup broker
 redis_broker = RedisBroker(host="open-var-prod.vhost32")
