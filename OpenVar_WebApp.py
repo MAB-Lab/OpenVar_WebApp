@@ -67,7 +67,7 @@ def send_email(to, subject, mg_domain, mg_key, plain=None, from_address=None):
     return response.status_code
 
 # dramatiq actors
-@dramatiq.actor(max_retries = 2, notify_shutdown=True, time_limit=18000000)
+@dramatiq.actor(max_retries = 0, notify_shutdown=True, time_limit=18000000)
 def run_openvar(guid, study_name, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
     try:
         print('Launching OpenVar...')
@@ -114,7 +114,7 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
                 subject = "Your OpenVar results"
                 content = 'Thank you for using OpenVar! Your results are available at this address: www.openprot.org/openvar/' + guid
                 sent = send_email(email, subject, mg_domain, mg_key, plain = content)
-                print(sent)
+                print(f"{sent}")
                 print('Done!')
 
 
