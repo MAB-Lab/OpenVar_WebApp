@@ -11,6 +11,7 @@ $(document).ready(function() {
 	$('#not_launched_img').hide();
 
 	var guid = location.pathname.substr(8);
+	console.log(guid)
 	
 	fetch("/openvar/" + guid + "/json").then( function(response) {
 		response.json().then( function(data) {
