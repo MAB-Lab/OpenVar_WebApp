@@ -29,7 +29,7 @@ app.config['JSON_SORT_KEYS'] = False
 app.secret_key = 'abcd1234'
 
 # Setup broker
-redis_broker = RedisBroker(host="127.0.0.1")
+redis_broker = RedisBroker(host="open-var-prod.vhost32")
 dramatiq.set_broker(redis_broker)
 
 # Initiate forms
