@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import *
 import zipfile
 import requests
+import traceback
 
 # Setup app
 app = Flask(__name__, static_url_path='/openvar/static')
@@ -95,12 +96,11 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
             else:
                 opvr = OPVReport(opv)
                 print('opvr object created')
+                print(str(opvr.analyzed_variants))
                 opvr.aggregate_annotated_vcf()
                 print('aggregate was run')
                 opvr.write_tabular()
                 print('tsv written')
-                opvr.analyze_all_variants()
-                print('analyzing all variants')
                 opvr.compute_summary_stats()
                 print('summary stats were computed')
                 print('Moving input file...')
