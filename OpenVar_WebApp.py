@@ -120,6 +120,7 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
 
 
     except:
+        traceback.print_exc()
         error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
         with open(error_file, 'w') as f:
             f.write("We're sorry, something went wrong... Please try again and contact us should the error persists.")
