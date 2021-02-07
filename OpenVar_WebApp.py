@@ -96,7 +96,6 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
             else:
                 opvr = OPVReport(opv)
                 print('opvr object created')
-                print(str(opvr.analyzed_variants))
                 opvr.aggregate_annotated_vcf()
                 print('aggregate was run')
                 opvr.write_tabular()
@@ -178,51 +177,70 @@ def get_results_json(guid):
         study_name = summary['study_name']
         general_stats = summary['Counts summary']
         chroms = {('Chrom. ' + str(chrom[0])): chrom[1] for chrom in summary['Chromosome Level']}
-        top100genes = {gene[0]: gene[1] for gene in summary['Gene Level'][:100]}
-        top10genes = {gene[0]: gene[1] for gene in summary['Gene Level'][:10]}
+        if summary['Gene Level'] == 'No gene consequences for the submitted variants.':
+            gene_allnulls = 'True'
+            top100genes = {}
+            top10genes = {}
+        else:
+            gene_allnulls = 'False'
+            top100genes = {gene[0]: gene[1] for gene in summary['Gene Level'][:100]}
+            top10genes = {gene[0]: gene[1] for gene in summary['Gene Level'][:10]}
         levels = {"Low":1, "Medium":2, "High":3}
         prot_stats = dict()
         count_graph = dict()
         prot_counts = dict()
-        for key in summary['Protein Level']:
-            if key == 'Impact Counts':
-                count_graph['Alternative protein'] = {n: summary['Protein Level'][key][levels[n]]['alt'] for n in levels.keys()}
-                count_graph['Reference protein'] = {n: summary['Protein Level'][key][levels[n]]['ref'] for n in levels.keys()}
-            elif key == 'Fold Change':
-                prot_counts['Fold Change'] = {n: summary['Protein Level'][key][levels[n]] for n in levels.keys()}
-            elif key == 'Impact Annotation':
-                prot_counts['Classic annotation'] = {n: summary['Protein Level'][key]['ref_all'][levels[n]] for n in levels.keys()}
-                prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
-            else:
-                prot_stats[key] = summary['Protein Level'][key]
-        hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts'], summary['Mutational hotspots on altORFs'][x]['ave_impact']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
-        sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], gene[1][3], gene[1][1], -len(gene[1][2])), reverse=True)}
-        hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
-        hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
-
-        bins = [(0. + (n - 1) * (1. / 30), 0. + n * (1. / 30)) for n in list(range(1, 31))]
-        bin_labels = [' - '.join(['{:.2f}'.format(round(x, 2)) for x in left_right]) for left_right in bins]
-        genes_per_bin = {n: [] for n in bin_labels}
-        altorf_counts = {n: 0 for n in bin_labels}
-        for gene in sorted_hotspots:
-            for left, right, label in zip([x[0] for x in bins], [x[1] for x in bins], bin_labels):
-                freq = sorted_hotspots[gene][0]
-                alts = len(sorted_hotspots[gene][2])
-                if (freq > left) and (freq <= right):
-                    genes_per_bin[label].append(gene)
-                    altorf_counts[label] += alts
-        gene_counts = {n: len(genes_per_bin[n]) for n in bin_labels}
-        altorf_per_gene = {n: altorf_counts[n] / gene_counts[n] if gene_counts[n] > 0 else 0. for n in bin_labels}
-        Norm = plt.Normalize(min(altorf_per_gene.values()), max(altorf_per_gene.values()))
-        colors = [to_hex(x) for x in plt.cm.plasma_r(Norm(list(altorf_per_gene.values())))]
+        if (len(summary['Protein Level']['Impact Counts']) == 0) and (len(summary['Protein Level']['Fold Change']) == 0) and (len(summary['Protein Level']['Impact Annotation']) == 0):
+            prot_stats['outcome'] = 'No gene consequences for the submitted variants'
+        else:
+            prot_stats['outcome'] = 'At least one gene consequence'
+            for key in summary['Protein Level']:
+                if key == 'Impact Counts':
+                    count_graph['Alternative protein'] = {n: summary['Protein Level'][key][levels[n]]['alt'] for n in levels.keys()}
+                    count_graph['Reference protein'] = {n: summary['Protein Level'][key][levels[n]]['ref'] for n in levels.keys()}
+                elif key == 'Fold Change':
+                    prot_counts['Fold Change'] = {n: summary['Protein Level'][key][levels[n]] for n in levels.keys()}
+                elif key == 'Impact Annotation':
+                    prot_counts['Classic annotation'] = {n: summary['Protein Level'][key]['ref_all'][levels[n]] for n in levels.keys()}
+                    prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
+                else:
+                    prot_stats[key] = summary['Protein Level'][key]
+        if summary['Mutational hotspots on altORFs']['All nulls']:
+            hotspots_allnulls = 'True'
+            hotspots_top10 = {}
+            hotspots_top100 = {}
+            gene_counts = {}
+            colors = {}
+            altorf_per_gene = {}
+        else:
+            hotspots_allnulls = 'False'
+            hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts'], summary['Mutational hotspots on altORFs'][x]['ave_impact']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+            sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], gene[1][3], gene[1][1], -len(gene[1][2])), reverse=True)}
+            hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
+            hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
+            bins = [(0. + (n - 1) * (1. / 30), 0. + n * (1. / 30)) for n in list(range(1, 31))]
+            bin_labels = [' - '.join(['{:.2f}'.format(round(x, 2)) for x in left_right]) for left_right in bins]
+            genes_per_bin = {n: [] for n in bin_labels}
+            altorf_counts = {n: 0 for n in bin_labels}
+            for gene in sorted_hotspots:
+                for left, right, label in zip([x[0] for x in bins], [x[1] for x in bins], bin_labels):
+                    freq = sorted_hotspots[gene][0]
+                    alts = len(sorted_hotspots[gene][2])
+                    if (freq > left) and (freq <= right):
+                        genes_per_bin[label].append(gene)
+                        altorf_counts[label] += alts
+            gene_counts = {n: len(genes_per_bin[n]) for n in bin_labels}
+            altorf_per_gene = {n: altorf_counts[n] / gene_counts[n] if gene_counts[n] > 0 else 0. for n in bin_labels}
+            Norm = plt.Normalize(min(altorf_per_gene.values()), max(altorf_per_gene.values()))
+            colors = [to_hex(x) for x in plt.cm.plasma_r(Norm(list(altorf_per_gene.values())))]
 
         return jsonify({'outcome': 'success',
             'study_name': study_name,
             'general_stats': general_stats, 
             'chromosomes': chroms, 
-            'top10_genes': top10genes, 'top100_genes': top100genes, 
+            'gene_allnulls': gene_allnulls, 'top10_genes': top10genes, 'top100_genes': top100genes, 
             'prot_stats': prot_stats, 'prot_counts': prot_counts, 'graph_counts': count_graph,
-            'hotspots_top10': hotspots_top10, 'hotspots_top100': hotspots_top100, 'hotspot_graph': gene_counts, 'graph_color': colors, 'altorf_per_gene': altorf_per_gene})
+            'hotspots_allnulls': hotspots_allnulls, 'hotspots_top10': hotspots_top10, 'hotspots_top100': hotspots_top100, 
+            'hotspot_graph': gene_counts, 'graph_color': colors, 'altorf_per_gene': altorf_per_gene})
 
 
     elif os.path.exists(os.path.join(results_dir, 'error.txt')):
