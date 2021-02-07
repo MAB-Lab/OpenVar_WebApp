@@ -177,7 +177,7 @@ def get_results_json(guid):
         study_name = summary['study_name']
         general_stats = summary['Counts summary']
         chroms = {('Chrom. ' + str(chrom[0])): chrom[1] for chrom in summary['Chromosome Level']}
-        if summary['Gene Level'] == ['No gene consequences for the submitted variants.']:
+        if summary['Gene Level'] == []:
             gene_allnulls = 'True'
             top100genes = {}
             top10genes = {}
