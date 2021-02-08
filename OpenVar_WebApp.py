@@ -190,9 +190,9 @@ def get_results_json(guid):
         count_graph = dict()
         prot_counts = dict()
         if (len(summary['Protein Level']['Impact Counts']) == 0) and (len(summary['Protein Level']['Fold Change']) == 0) and (len(summary['Protein Level']['Impact Annotation']) == 0):
-            prot_stats['outcome'] = 'No gene consequences for the submitted variants'
+            prot_allnulls = 'True'
         else:
-            prot_stats['outcome'] = 'At least one gene consequence'
+            prot_allnulls = 'False'
             for key in summary['Protein Level']:
                 if key == 'Impact Counts':
                     count_graph['Alternative protein'] = {n: summary['Protein Level'][key][levels[n]]['alt'] for n in levels.keys()}
@@ -238,7 +238,7 @@ def get_results_json(guid):
             'general_stats': general_stats, 
             'chromosomes': chroms, 
             'gene_allnulls': gene_allnulls, 'top10_genes': top10genes, 'top100_genes': top100genes, 
-            'prot_stats': prot_stats, 'prot_counts': prot_counts, 'graph_counts': count_graph,
+            'prot_allnulls': prot_allnulls, 'prot_stats': prot_stats, 'prot_counts': prot_counts, 'graph_counts': count_graph,
             'hotspots_allnulls': hotspots_allnulls, 'hotspots_top10': hotspots_top10, 'hotspots_top100': hotspots_top100, 
             'hotspot_graph': gene_counts, 'graph_color': colors, 'altorf_per_gene': altorf_per_gene})
 

@@ -107,7 +107,7 @@ $(document).ready(function() {
 					$('.results__gene_allnulls').css('display', 'grid');
 				}
 
-				if (data.prot_stats.outcome == 'At least one gene consequence') {
+				if (data.prot_allnulls == 'False') {
 					$('.results__protein').css('display', 'grid');
 					$(function() {
 						$.each(data.prot_stats, function(key, item){
