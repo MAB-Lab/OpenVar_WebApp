@@ -92,30 +92,35 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
             if not run_ok:
                 error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
                 with open(error_file, 'w') as f:
-                    f.write("Oops, we're sorry but a fatal error occurred whislt running your analysis. You may try to resubmit, but please contact us should the error persist.")
+                    f.write("Oops, we're sorry but a fatal error occurred whilst running your analysis. You may try to resubmit, but please contact us should the error persist.")
             else:
-                opvr = OPVReport(opv)
-                print('opvr object created')
-                opvr.aggregate_annotated_vcf()
-                print('aggregate was run')
-                opvr.write_tabular()
-                print('tsv written')
-                opvr.compute_summary_stats()
-                print('summary stats were computed')
-                print('Moving input file...')
-                input_file = os.path.join(upload_path, (guid+'.vcf'))
-                os.rename(input_file, os.path.join(opv.output_dir, 'input_vcf.vcf'))
-                print('Creating folder for downloads...')
-                zipf = zipfile.ZipFile(os.path.join(vcf.results_dir, 'OpenVar_output.zip'), 'w', zipfile.ZIP_DEFLATED)
-                zipdir(opvr.output_dir, zipf)
-                zipf.close()
-                print('Output zipped. Analysis completed!')
-                print('Sending email...')
-                subject = "Your OpenVar results"
-                content = 'Thank you for using OpenVar! Your results are available at this address: www.openprot.org/openvar/' + guid
-                sent = send_email(email, subject, mg_domain, mg_key, plain = content)
-                print(f"{sent}")
-                print('Done!')
+                if len(os.listdir(os.path.join(opv.results_dir, 'vcf_splits'))) == 0:
+                    error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
+                    with open(error_file, 'w') as f:
+                        f.write("All alleles in the vcf were invalid: please check you selected the right species and/or the right genome version.")
+                else:
+                    opvr = OPVReport(opv)
+                    print('opvr object created')
+                    opvr.aggregate_annotated_vcf()
+                    print('aggregate was run')
+                    opvr.write_tabular()
+                    print('tsv written')
+                    opvr.compute_summary_stats()
+                    print('summary stats were computed')
+                    print('Moving input file...')
+                    input_file = os.path.join(upload_path, (guid+'.vcf'))
+                    os.rename(input_file, os.path.join(opv.output_dir, 'input_vcf.vcf'))
+                    print('Creating folder for downloads...')
+                    zipf = zipfile.ZipFile(os.path.join(vcf.results_dir, 'OpenVar_output.zip'), 'w', zipfile.ZIP_DEFLATED)
+                    zipdir(opvr.output_dir, zipf)
+                    zipf.close()
+                    print('Output zipped. Analysis completed!')
+        print('Sending email...')
+        subject = "Your OpenVar results"
+        content = 'Thank you for using OpenVar! Your results are available at this address: www.openprot.org/openvar/' + guid
+        sent = send_email(email, subject, mg_domain, mg_key, plain = content)
+        print(f"{sent}")
+        print('Done!')
 
 
     except:
