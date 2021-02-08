@@ -94,7 +94,7 @@ def run_openvar(guid, study_name, genome_version, annotation, upload_path, resul
                 with open(error_file, 'w') as f:
                     f.write("Oops, we're sorry but a fatal error occurred whilst running your analysis. You may try to resubmit, but please contact us should the error persist.")
             else:
-                if len(os.listdir(os.path.join(opv.results_dir, 'vcf_splits'))) == 0:
+                if len(os.listdir(os.path.join(os.path.join(result_path, guid), 'vcf_splits'))) == 0:
                     error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
                     with open(error_file, 'w') as f:
                         f.write("All alleles in the vcf were invalid: please check you selected the right species and/or the right genome version.")
