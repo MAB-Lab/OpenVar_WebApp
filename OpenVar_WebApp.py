@@ -204,7 +204,7 @@ def get_results_json(guid):
                     prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
                 else:
                     prot_stats[key] = summary['Protein Level'][key]
-        if summary['Mutational hotspots on altORFs']['All nulls']:
+        if 'All nulls' in summary['Mutational hotspots on altORFs'].keys():
             hotspots_allnulls = 'True'
             hotspots_top10 = {}
             hotspots_top100 = {}
