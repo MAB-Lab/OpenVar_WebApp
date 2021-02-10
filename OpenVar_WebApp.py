@@ -70,13 +70,14 @@ def send_email(to, subject, mg_domain, mg_key, plain=None, from_address=None):
 
 # dramatiq actors
 @dramatiq.actor(max_retries = 0, notify_shutdown=True, time_limit=18000000)
-def run_openvar(guid, study_name, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
+def run_openvar(guid, study_name, species, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
     try:
         print('Launching OpenVar...')
         vcf = SeqStudy(data_dir = upload_path, 
                 file_name = (guid + '.vcf'), 
                 results_dir = os.path.join(result_path, guid), 
                 study_name = study_name, 
+                specie = species,
                 genome_version = genome_version)
         if not vcf.file_check: 
             error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
@@ -155,11 +156,12 @@ def process_userinput():
         guid = form.user_input.guid.data
         link = '/openvar/' + guid
         email = form.user_input.email.data
+        species = form.user_input.species.data
         study_name = form.user_input.study_name.data
         genome_version = form.user_input.genome.data
         annotation = form.user_input.build.data
         
-        run_openvar.send(guid, study_name, genome_version, annotation, app.config['UPLOAD_PATH'], app.config['RESULTS_PATH'], email, app.config['MG_DOMAIN'], app.config['MG_KEY'])
+        run_openvar.send(guid, study_name, species, genome_version, annotation, app.config['UPLOAD_PATH'], app.config['RESULTS_PATH'], email, app.config['MG_DOMAIN'], app.config['MG_KEY'])
 
         return jsonify({'outcome': 'success', 'guid': guid, 'link': link, 'email': email, 'study_name': study_name})
     else:
