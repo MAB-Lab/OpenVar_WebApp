@@ -169,8 +169,7 @@ $(document).ready(function() {
 							$('<tr>').append(
 							$('<td>').text(key),
 							$('<td>').text((Math.round(item[0]*100)/100).toLocaleString()).css('font-family', 'Courier'),
-							$('<td>').text(item[1].toLocaleString()).css('font-family', 'Courier'),
-							$('<td>').text(item[2])).appendTo('#results_hotspots_tbody');
+							$('<td>').text(item[1].toLocaleString()).css('font-family', 'Courier')).appendTo('#results_hotspots_tbody');
 						});
 					});
 
@@ -180,8 +179,7 @@ $(document).ready(function() {
 							$('<tr>').append(
 							$('<td>').text(key),
 							$('<td>').text(Math.round(item[0]*100)/100),
-							$('<td>').text(item[1]),
-							$('<td>').text(item[2])).appendTo('#results_hotspots_tbody');
+							$('<td>').text(item[1].toLocaleString()).css('font-family', 'Courier')).appendTo('#results_hotspots_tbody');
 						});
 						$('#see_100__hotspots').hide();
 						$('#collapse__hotspots').show();
@@ -193,8 +191,7 @@ $(document).ready(function() {
 							$('<tr>').append(
 							$('<td>').text(key),
 							$('<td>').text(Math.round(item[0]*100)/100),
-							$('<td>').text(item[1]),
-							$('<td>').text(item[2])).appendTo('#results_hotspots_tbody');
+							$('<td>').text(item[1].toLocaleString()).css('font-family', 'Courier')).appendTo('#results_hotspots_tbody');
 						});
 						$('#see_100__hotspots').show();
 						$('#collapse__hotspots').hide();
@@ -206,13 +203,23 @@ $(document).ready(function() {
 						data: {
 							labels: Object.keys(data.hotspot_graph),
 							datasets: [{
-								label: 'Count of genes in this category',
-								data: Object.values(data.hotspot_graph),
-								backgroundColor: data.graph_color,
-								altorf_per_gene: Object.values(data.altorf_per_gene),
+								label: 'Count of altORFs with one SNP',
+								data: Object.values(data.hotspot_graph.one_snp),
+								backgroundColor: data.graph_color[0],
+								average_impact: Object.values(data.mean_impact_per_bin.one_snp)
+							}, {
+								label: 'Count of altORFs with 2 to 10 SNPs',
+								data: Object.values(data.hotspot_graph.one_ten),
+								backgroundColor: data.graph_color[1],
+								average_impact: Object.values(data.mean_impact_per_bin.one_ten)
+							}, {
+								label: 'Count of altORFs with at least 10 SNPs',
+								data: Object.values(data.hotspot_graph.over_ten),
+								backgroundColor: data.graph_color[2],
+								average_impact: Object.values(data.mean_impact_per_bin.over_ten)
 							}]
 						},
-						options: { legend: {display: false}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average altORF per gene: ' + Math.round(d.datasets[t.datasetIndex].altorf_per_gene[t.index]*100)/100 } }} },
+						options: { legend: {display: false}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
 					});
 				} else {
 					$('.results__altHotSpot_allnulls').css('display', 'grid');
