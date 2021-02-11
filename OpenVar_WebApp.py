@@ -79,10 +79,14 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
                 study_name = study_name, 
                 specie = species,
                 genome_version = genome_version)
-        if not vcf.file_check: 
+        if not vcf.file_check:
+            print('Writin error file')
             error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
             with open(error_file, 'w') as f:
                 f.write('Your file did not pass the VCF format validation step. Please check your file format before resubmitting the analysis.')
+            print('Moving input file...')
+            input_file = os.path.join(upload_path, (guid+'.vcf'))
+            os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
         else:
             opv = OpenVar(snpeff_path = '/open-var-deposit/snpEff/', 
                     vcf = vcf,
@@ -91,14 +95,22 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             run_ok = opv.run_snpeff_parallel_pipe()
             print('Openvar was run {}'.format(run_ok))
             if not run_ok:
+                print('Wrinting error file')
                 error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
                 with open(error_file, 'w') as f:
                     f.write("Oops, we're sorry but a fatal error occurred whilst running your analysis. You may try to resubmit, but please contact us should the error persist.")
+                print('Moving input file...')
+                input_file = os.path.join(upload_path, (guid+'.vcf'))
+                os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
             else:
                 if len(os.listdir(os.path.join(os.path.join(result_path, guid), 'vcf_splits'))) == 0:
+                    print('Writing error file')
                     error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
                     with open(error_file, 'w') as f:
-                        f.write("All alleles in the vcf were invalid: please check you selected the right species and/or the right genome version.")
+                        f.write("All alleles in the submitted vcf were invalid: please check that you selected the right species and/or the right genome version.")
+                    print('Moving input file...')
+                    input_file = os.path.join(upload_path, (guid+'.vcf'))
+                    os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
                 else:
                     opvr = OPVReport(opv)
                     print('opvr object created')
@@ -126,9 +138,13 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
 
     except:
         traceback.print_exc()
+        print('Writing error file')
         error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
         with open(error_file, 'w') as f:
             f.write("We're sorry, something went wrong... Please try again and contact us should the error persists.")
+        print('Moving input file...')
+        input_file = os.path.join(upload_path, (guid+'.vcf'))
+        os.rename(input_file, os.path.join(opv.output_dir, 'input_vcf.vcf'))
 
 #APP ROUTES
 # Home page
@@ -220,25 +236,28 @@ def get_results_json(guid):
             altorf_per_gene = {}
         else:
             hotspots_allnulls = 'False'
-            hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['ratio_higher_alt'], summary['Mutational hotspots on altORFs'][x]['cnt_alt_snps'], summary['Mutational hotspots on altORFs'][x]['alts'], summary['Mutational hotspots on altORFs'][x]['ave_impact']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
-            sorted_hotspots = {k: v for k, v in sorted(hotspots.items() , key = lambda gene: (gene[1][0], gene[1][3], gene[1][1], -len(gene[1][2])), reverse=True)}
+            hotspots = dict(zip(list(alt_snps_stats.keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+            sorted_hotspots = {k: v for k, v in sorted(hotspots.items(), key = lambda alt: (alt[1][0], alt[1][2]), reverse=True)}
             hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
             hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
             bins = [(0. + (n - 1) * (1. / 30), 0. + n * (1. / 30)) for n in list(range(1, 31))]
             bin_labels = [' - '.join(['{:.2f}'.format(round(x, 2)) for x in left_right]) for left_right in bins]
-            genes_per_bin = {n: [] for n in bin_labels}
-            altorf_counts = {n: 0 for n in bin_labels}
-            for gene in sorted_hotspots:
+            altorfs_per_bin = {cat: {n: [] for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+            for gene_alt in summary['Mutational hotspots on altORFs']:
                 for left, right, label in zip([x[0] for x in bins], [x[1] for x in bins], bin_labels):
-                    freq = sorted_hotspots[gene][0]
-                    alts = len(sorted_hotspots[gene][2])
+                    freq = summary['Mutational hotspots on altORFs'][gene_alt]['total_portion_gene']
+                    snps = summary['Mutational hotspots on altORFs'][gene_alt]['cnt_snps']
+                    mean_impact = summary['Mutational hotspots on altORFs'][gene_alt]['mean_impacts']
                     if (freq > left) and (freq <= right):
-                        genes_per_bin[label].append(gene)
-                        altorf_counts[label] += alts
-            gene_counts = {n: len(genes_per_bin[n]) for n in bin_labels}
-            altorf_per_gene = {n: altorf_counts[n] / gene_counts[n] if gene_counts[n] > 0 else 0. for n in bin_labels}
-            Norm = plt.Normalize(min(altorf_per_gene.values()), max(altorf_per_gene.values()))
-            colors = [to_hex(x) for x in plt.cm.plasma_r(Norm(list(altorf_per_gene.values())))]
+                        if snps == 1:
+                            altorfs_per_bin['one_snp'][label].append(mean_impact)
+                        elif snps < 10:
+                            altorfs_per_bin['one_ten'][label].append(mean_impact)
+                        else:
+                            altorfs_per_bin['over_ten'][label].append(mean_impact)
+            altorf_counts = {cat: {n: len(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+            colors = ['#f3a6fc', '#cf5fe3', '#7b198c']
+            mean_impact_per_bin = {cat: {n: np.mean(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
 
         return jsonify({'outcome': 'success',
             'study_name': study_name,
@@ -247,7 +266,7 @@ def get_results_json(guid):
             'gene_allnulls': gene_allnulls, 'top10_genes': top10genes, 'top100_genes': top100genes, 
             'prot_allnulls': prot_allnulls, 'prot_stats': prot_stats, 'prot_counts': prot_counts, 'graph_counts': count_graph,
             'hotspots_allnulls': hotspots_allnulls, 'hotspots_top10': hotspots_top10, 'hotspots_top100': hotspots_top100, 
-            'hotspot_graph': gene_counts, 'graph_color': colors, 'altorf_per_gene': altorf_per_gene})
+            'hotspot_graph': altorf_counts, 'graph_color': colors, 'mean_impact_per_bin': mean_impact_per_bin})
 
 
     elif os.path.exists(os.path.join(results_dir, 'error.txt')):
@@ -259,7 +278,7 @@ def get_results_json(guid):
             message = 'Your analysis is running. Please check again later.'
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'running'})
         elif os.path.exists(input_file):
-            message = 'Your analysis is in the queue. Please check again later.'
+            message = 'Your analysis has been added to the queue. Please check again later.'
             return jsonify({'outcome': 'error', 'message': message, 'tag': 'running'})
         else:
             message = 'Your files were removed from our server 10 days after completion of the analysis.'
