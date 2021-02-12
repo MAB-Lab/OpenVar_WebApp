@@ -257,7 +257,7 @@ def get_results_json(guid):
                             altorfs_per_bin['over_ten'][label].append(mean_impact)
             altorf_counts = {cat: {n: len(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
             colors = ['#f3a6fc', '#cf5fe3', '#7b198c']
-            mean_impact_per_bin = {cat: {n: np.mean(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+            mean_impact_per_bin = {cat: {n: np.mean(altorfs_per_bin[cat][n]) if len(altorfs_per_bin[cat][n]) != 0 else 0. for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
 
         return jsonify({'outcome': 'success',
             'study_name': study_name,
