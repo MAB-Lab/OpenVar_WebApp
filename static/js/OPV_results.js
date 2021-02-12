@@ -201,25 +201,25 @@ $(document).ready(function() {
 					var bar_hotspot = new Chart(hotspot_bar, {
 						type: 'bar',
 						data: {
-							labels: Object.keys(data.hotspot_graph),
+							labels: Object.keys(data.hotspot_graph.one_snp),
 							datasets: [{
 								label: 'Count of altORFs with one SNP',
 								data: Object.values(data.hotspot_graph.one_snp),
 								backgroundColor: '#f3a6fc',
-								average_impact: Object.values(data.mean_impact_per_bin.one_snp)
+								average_impact: Object.values(data.mean_impact_per_bin.one_snp),
 							}, {
 								label: 'Count of altORFs with 2 to 10 SNPs',
 								data: Object.values(data.hotspot_graph.one_ten),
 								backgroundColor: '#cf5fe3',
-								average_impact: Object.values(data.mean_impact_per_bin.one_ten)
+								average_impact: Object.values(data.mean_impact_per_bin.one_ten),
 							}, {
 								label: 'Count of altORFs with at least 10 SNPs',
 								data: Object.values(data.hotspot_graph.over_ten),
 								backgroundColor: '#7b198c',
-								average_impact: Object.values(data.mean_impact_per_bin.over_ten)
+								average_impact: Object.values(data.mean_impact_per_bin.over_ten),
 							}]
 						},
-						options: { legend: {display: false}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{stacked: true}], yAxes: [{stacked: false}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
+						options: { legend: {display: false}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{stacked: true}], yAxes: [{stacked: true}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
 					});
 				} else {
 					$('.results__altHotSpot_allnulls').css('display', 'grid');
