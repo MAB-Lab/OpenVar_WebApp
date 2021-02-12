@@ -236,7 +236,7 @@ def get_results_json(guid):
             altorf_per_gene = {}
         else:
             hotspots_allnulls = 'False'
-            hotspots = dict(zip(list(alt_snps_stats.keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+            hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
             sorted_hotspots = {k: v for k, v in sorted(hotspots.items(), key = lambda alt: (alt[1][0], alt[1][2]), reverse=True)}
             hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
             hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
