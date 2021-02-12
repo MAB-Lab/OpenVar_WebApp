@@ -480,6 +480,7 @@ body{
 .responsive_table{
 	grid-row: 2 / 3;
 	overflow-x:auto;
+	place-self:center;
 }
 .responsive_table > table{
 	border: 1px solid #444;
