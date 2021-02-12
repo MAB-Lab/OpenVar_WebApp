@@ -205,17 +205,17 @@ $(document).ready(function() {
 							datasets: [{
 								label: 'Count of altORFs with one SNP',
 								data: Object.values(data.hotspot_graph.one_snp),
-								backgroundColor: data.graph_color[0],
+								backgroundColor: '#f3a6fc',
 								average_impact: Object.values(data.mean_impact_per_bin.one_snp)
 							}, {
 								label: 'Count of altORFs with 2 to 10 SNPs',
 								data: Object.values(data.hotspot_graph.one_ten),
-								backgroundColor: data.graph_color[1],
+								backgroundColor: '#cf5fe3',
 								average_impact: Object.values(data.mean_impact_per_bin.one_ten)
 							}, {
 								label: 'Count of altORFs with at least 10 SNPs',
 								data: Object.values(data.hotspot_graph.over_ten),
-								backgroundColor: data.graph_color[2],
+								backgroundColor: '#7b198c',
 								average_impact: Object.values(data.mean_impact_per_bin.over_ten)
 							}]
 						},
