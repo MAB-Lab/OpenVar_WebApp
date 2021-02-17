@@ -101,7 +101,7 @@ $(document).ready(function() {
 								backgroundColor: '#bde2f8',
 							}]
 						},
-						options: { legend: { display: false }, layout: { padding: { left: 0, right: 0, top: 0, bottom: 0 } }, title: { display: true, text: 'Mutations / kb per gene (top 100)', fontSize: 16} },
+						options: { legend: { display: false }, layout: { padding: { left: 0, right: 0, top: 0, bottom: 0 } }, scales:{ yAxes:[{scaleLabel:{display:true, labelString: 'Genomic variants per Kb'} }] }, title: { display: true, text: 'Mutations / kb per gene (top 100)', fontSize: 16} },
 					});
 				} else {
 					$('.results__gene_allnulls').css('display', 'grid');
@@ -137,7 +137,7 @@ $(document).ready(function() {
 								backgroundColor: ['#e6f2ff', '#66b3ff', '#004d99']
 							}]
 						},
-						options:{ legend:{ display: false }, layout:{ padding: { left: 0, right: 0, top: 0, bottom: 0 } }, title: { display: true, text: 'Fold-change gained from deeper annotation per impact', fontSize: 16} },
+						options:{ legend:{ display: false }, layout:{ padding: { left: 0, right: 0, top: 0, bottom: 0 } }, scales:{ xAxes:[{scaleLabel:{display:true, labelString: 'Fold-change'}}] }, title: { display: true, text: 'Fold-change gained from deeper annotation per impact', fontSize: 16} },
 					});
 
 					var stackedbar_imp = document.getElementById('prot__ImpactbarChart');
@@ -155,7 +155,7 @@ $(document).ready(function() {
 								backgroundColor: '#9fdfbf'
 							}]
 						},
-						options: {legend: {display: true, position: 'bottom'}, layout:{ padding: {left: 0, right:0, top: 0, bottom: 0} }, scales:{ xAxes:[{stacked: true}], yAxes: [{stacked: true}] }, title: { display: true, text: 'Number of variants per impact', fontSize: 16} },
+						options: {legend: {display: true, position: 'bottom'}, layout:{ padding: {left: 0, right:0, top: 0, bottom: 0} }, scales:{ xAxes:[{scaleLabel:{display:true, labelString: 'Count of genomic variants'}, stacked: true}], yAxes: [{stacked: true}] }, title: { display: true, text: 'Number of variants per impact', fontSize: 16} },
 					});
 				} else {
 					$('.results__protein_allnulls').css('display', 'grid');
@@ -219,7 +219,7 @@ $(document).ready(function() {
 								average_impact: Object.values(data.mean_impact_per_bin.over_ten),
 							}]
 						},
-						options: { legend: {display: true}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{scaleLabel: {display: true, labelString: 'Count of altORFs'}, stacked: true}], yAxes: [{scaleLabel: {display: true, labelString: 'Portion of gene SNPs in altORF'}, stacked: true}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
+						options: { legend: {display: true}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{scaleLabel: {display: true, labelString: "Portion of gene's variants in altORF"}, stacked: true}], yAxes: [{scaleLabel: {display: true, labelString: 'Count of altORFs'}, stacked: true}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
 					});
 				} else {
 					$('.results__altHotSpot_allnulls').css('display', 'grid');
