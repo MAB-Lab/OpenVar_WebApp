@@ -219,7 +219,7 @@ $(document).ready(function() {
 								average_impact: Object.values(data.mean_impact_per_bin.over_ten),
 							}]
 						},
-						options: { legend: {display: true}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{stacked: true}], yAxes: [{stacked: true}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
+						options: { legend: {display: true}, layout: { padding: {left:0, right:0, top:0, bottom:0} }, scales:{ xAxes:[{scaleLabel: {display: true, labelString: 'Count of altORFs'}, stacked: true}], yAxes: [{scaleLabel: {display: true, labelString: 'Portion of gene SNPs in altORF'}, stacked: true}]}, title: { display: true, text:'Mutational hotspots on alternative proteins', fontSize:16}, tooltips: { callbacks: { afterLabel: function(t, d){ return 'Average impact of SNPs: ' + Math.round(d.datasets[t.datasetIndex].average_impact[t.index]*100)/100 } }} },
 					});
 				} else {
 					$('.results__altHotSpot_allnulls').css('display', 'grid');
