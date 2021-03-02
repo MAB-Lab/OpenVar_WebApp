@@ -46,7 +46,7 @@ class UserInputForm(FlaskForm):
             choices=[("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")], 
             validators=[DataRequired()])
     build = SelectField("Genome build to annotate the VCF:", 
-            choices=[("OP_Ens", "OpenProt (Ensembl)"), ("OP_RefSeq", "OpenProt (NCBI RefSeq)"), ("Ensembl", "Ensembl (only canonical sequences)"), ("RefSeq", "NCBI RefSeq (only canonical sequences")], 
+            choices=[("OP_Ensembl", "OpenProt (Ensembl)"), ("OP_RefSeq", "OpenProt (NCBI RefSeq)"), ("Ensembl", "Ensembl (only canonical sequences)"), ("RefSeq", "NCBI RefSeq (only canonical sequences")], 
             validators=[DataRequired()])
     guid = StringField("GUID:")
 
@@ -73,6 +73,7 @@ def send_email(to, subject, mg_domain, mg_key, plain=None, from_address=None):
 def run_openvar(guid, study_name, species, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
     try:
         print('Launching OpenVar...')
+        input_file = os.path.join(upload_path, (guid+'.vcf'))
         vcf = SeqStudy(data_dir = upload_path, 
                 file_name = (guid + '.vcf'), 
                 results_dir = os.path.join(result_path, guid), 
@@ -92,7 +93,10 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             opv = OpenVar(snpeff_path = '/open-var-deposit/snpEff/', 
                     vcf = vcf)
             print('opv object has been created {}'.format(opv.output_dir))
-            run_ok = opv.run_snpeff_parallel_pipe()
+            if "OP_" in annotation:
+                run_ok = opv.run_snpeff_parallel_pipe()
+            else:
+                run_ok = opv.run_snpeff(input_file, annotation)
             print('Openvar was run {}'.format(run_ok))
             if not run_ok:
                 print('Wrinting error file')
@@ -124,7 +128,6 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
                         opvr.compute_chrom_gene_level_stats(write_summary_pkl = True)
                     print('summary stats were computed')
                     print('Moving input file...')
-                    input_file = os.path.join(upload_path, (guid+'.vcf'))
                     os.rename(input_file, os.path.join(opv.output_dir, 'input_vcf.vcf'))
                     print('Creating folder for downloads...')
                     zipf = zipfile.ZipFile(os.path.join(vcf.results_dir, 'OpenVar_output.zip'), 'w', zipfile.ZIP_DEFLATED)
