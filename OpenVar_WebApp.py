@@ -78,7 +78,8 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
                 results_dir = os.path.join(result_path, guid), 
                 study_name = study_name, 
                 specie = species,
-                genome_version = genome_version)
+                genome_version = genome_version,
+                annotation = annotation)
         if not vcf.file_check:
             print('Writin error file')
             error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
