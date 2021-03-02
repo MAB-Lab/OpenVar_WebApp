@@ -90,8 +90,7 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
         else:
             opv = OpenVar(snpeff_path = '/open-var-deposit/snpEff/', 
-                    vcf = vcf,
-                    annotation = annotation)
+                    vcf = vcf)
             print('opv object has been created {}'.format(opv.output_dir))
             run_ok = opv.run_snpeff_parallel_pipe()
             print('Openvar was run {}'.format(run_ok))
