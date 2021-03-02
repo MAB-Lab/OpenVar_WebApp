@@ -118,7 +118,10 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
                     print('aggregate was run')
                     opvr.write_tabular()
                     print('tsv written')
-                    opvr.compute_summary_stats()
+                    if "OP_" in annotation:
+                        opvr.compute_summary_stats()
+                    else:
+                        opvr.compute_chrom_gene_level_stats(write_summary_pkl = True)
                     print('summary stats were computed')
                     print('Moving input file...')
                     input_file = os.path.join(upload_path, (guid+'.vcf'))
