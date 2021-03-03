@@ -54,6 +54,16 @@ class CombinedForm(FlaskForm):
     user_input = FormField(UserInputForm)
     file_upload = FormField(UploadVCF)
 
+def wc(filepath):
+    f = open(filepath,'r')
+    nl = ne = nc = 0
+    for line in f:
+        nl += 1
+        ne = ne + len(line.strip('\n').split('\t'))
+        nc = nc + len(line)
+    f.close()
+    return (nl, ne, nc)
+
 def zipdir(path, ziph):
     for root, dirs, files in os.walk(path):
         for file in files:
@@ -107,7 +117,7 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
                 input_file = os.path.join(upload_path, (guid+'.vcf'))
                 os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
             else:
-                if len(os.listdir(os.path.join(os.path.join(result_path, guid), 'vcf_splits'))) == 0:
+                if wc(input_file) == (wc(os.path.join(opv.output_dir, 'warnings.txt'))[0] - 1):
                     print('Writing error file')
                     error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
                     with open(error_file, 'w') as f:
