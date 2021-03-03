@@ -106,7 +106,7 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             if "OP_" in annotation:
                 run_ok = opv.run_snpeff_parallel_pipe()
             else:
-                run_ok = opv.run_snpeff(input_file, annotation)
+                run_ok = opv.run_snpeff(vcf.single_vcf_path, annotation)
             print('Openvar was run {}'.format(run_ok))
             if not run_ok:
                 print('Wrinting error file')
