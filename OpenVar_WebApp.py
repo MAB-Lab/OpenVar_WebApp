@@ -228,52 +228,60 @@ def get_results_json(guid):
         prot_stats = dict()
         count_graph = dict()
         prot_counts = dict()
-        if (len(summary['Protein Level']['Impact Counts']) == 0) and (len(summary['Protein Level']['Fold Change']) == 0) and (len(summary['Protein Level']['Impact Annotation']) == 0):
-            prot_allnulls = 'True'
-        else:
-            prot_allnulls = 'False'
-            for key in summary['Protein Level']:
-                if key == 'Impact Counts':
-                    count_graph['Alternative protein'] = {n: summary['Protein Level'][key][levels[n]]['alt'] for n in levels.keys()}
-                    count_graph['Reference protein'] = {n: summary['Protein Level'][key][levels[n]]['ref'] for n in levels.keys()}
-                elif key == 'Fold Change':
-                    prot_counts['Fold Change'] = {n: summary['Protein Level'][key][levels[n]] for n in levels.keys()}
-                elif key == 'Impact Annotation':
-                    prot_counts['Classic annotation'] = {n: summary['Protein Level'][key]['ref_all'][levels[n]] for n in levels.keys()}
-                    prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
-                else:
-                    prot_stats[key] = summary['Protein Level'][key]
-        if 'All nulls' in summary['Mutational hotspots on altORFs'].keys():
-            hotspots_allnulls = 'True'
+        if len(general_stats.keys() == 3):
+            prot_allnulls = hotspots_allnulls = gene_allnulls
             hotspots_top10 = {}
             hotspots_top100 = {}
             gene_counts = {}
             colors = {}
             altorf_per_gene = {}
         else:
-            hotspots_allnulls = 'False'
-            hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
-            sorted_hotspots = {k: v for k, v in sorted(hotspots.items(), key = lambda alt: (alt[1][0], alt[1][2]), reverse=True)}
-            hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
-            hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
-            bins = [(0. + (n - 1) * (1. / 30), 0. + n * (1. / 30)) for n in list(range(1, 31))]
-            bin_labels = [' - '.join(['{:.2f}'.format(round(x, 2)) for x in left_right]) for left_right in bins]
-            altorfs_per_bin = {cat: {n: [] for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
-            for gene_alt in summary['Mutational hotspots on altORFs']:
-                for left, right, label in zip([x[0] for x in bins], [x[1] for x in bins], bin_labels):
-                    freq = summary['Mutational hotspots on altORFs'][gene_alt]['total_portion_gene']
-                    snps = summary['Mutational hotspots on altORFs'][gene_alt]['cnt_snps']
-                    mean_impact = summary['Mutational hotspots on altORFs'][gene_alt]['mean_impacts']
-                    if (freq > left) and (freq <= right):
-                        if snps == 1:
-                            altorfs_per_bin['one_snp'][label].append(mean_impact)
-                        elif snps < 10:
-                            altorfs_per_bin['one_ten'][label].append(mean_impact)
-                        else:
-                            altorfs_per_bin['over_ten'][label].append(mean_impact)
-            altorf_counts = {cat: {n: len(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
-            colors = ['#f3a6fc', '#cf5fe3', '#7b198c']
-            mean_impact_per_bin = {cat: {n: np.mean(altorfs_per_bin[cat][n]) if len(altorfs_per_bin[cat][n]) != 0 else 0. for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+            if (len(summary['Protein Level']['Impact Counts']) == 0) and (len(summary['Protein Level']['Fold Change']) == 0) and (len(summary['Protein Level']['Impact Annotation']) == 0):
+                prot_allnulls = 'True'
+            else:
+                prot_allnulls = 'False'
+                for key in summary['Protein Level']:
+                    if key == 'Impact Counts':
+                        count_graph['Alternative protein'] = {n: summary['Protein Level'][key][levels[n]]['alt'] for n in levels.keys()}
+                        count_graph['Reference protein'] = {n: summary['Protein Level'][key][levels[n]]['ref'] for n in levels.keys()}
+                    elif key == 'Fold Change':
+                        prot_counts['Fold Change'] = {n: summary['Protein Level'][key][levels[n]] for n in levels.keys()}
+                    elif key == 'Impact Annotation':
+                        prot_counts['Classic annotation'] = {n: summary['Protein Level'][key]['ref_all'][levels[n]] for n in levels.keys()}
+                        prot_counts['Deep annotation'] = {n: summary['Protein Level'][key]['max_all'][levels[n]] for n in levels.keys()}
+                    else:
+                        prot_stats[key] = summary['Protein Level'][key]
+            if 'All nulls' in summary['Mutational hotspots on altORFs'].keys():
+                hotspots_allnulls = 'True'
+                hotspots_top10 = {}
+                hotspots_top100 = {}
+                gene_counts = {}
+                colors = {}
+                altorf_per_gene = {}
+            else:
+                hotspots_allnulls = 'False'
+                hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
+                sorted_hotspots = {k: v for k, v in sorted(hotspots.items(), key = lambda alt: (alt[1][0], alt[1][2]), reverse=True)}
+                hotspots_top10 = dict(zip(list(sorted_hotspots.keys())[:10], list(sorted_hotspots.values())[:10]))
+                hotspots_top100 = dict(zip(list(sorted_hotspots.keys())[:100], list(sorted_hotspots.values())[:100]))
+                bins = [(0. + (n - 1) * (1. / 30), 0. + n * (1. / 30)) for n in list(range(1, 31))]
+                bin_labels = [' - '.join(['{:.2f}'.format(round(x, 2)) for x in left_right]) for left_right in bins]
+                altorfs_per_bin = {cat: {n: [] for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+                for gene_alt in summary['Mutational hotspots on altORFs']:
+                    for left, right, label in zip([x[0] for x in bins], [x[1] for x in bins], bin_labels):
+                        freq = summary['Mutational hotspots on altORFs'][gene_alt]['total_portion_gene']
+                        snps = summary['Mutational hotspots on altORFs'][gene_alt]['cnt_snps']
+                        mean_impact = summary['Mutational hotspots on altORFs'][gene_alt]['mean_impacts']
+                        if (freq > left) and (freq <= right):
+                            if snps == 1:
+                                altorfs_per_bin['one_snp'][label].append(mean_impact)
+                            elif snps < 10:
+                                altorfs_per_bin['one_ten'][label].append(mean_impact)
+                            else:
+                                altorfs_per_bin['over_ten'][label].append(mean_impact)
+                altorf_counts = {cat: {n: len(altorfs_per_bin[cat][n]) for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
+                colors = ['#f3a6fc', '#cf5fe3', '#7b198c']
+                mean_impact_per_bin = {cat: {n: np.mean(altorfs_per_bin[cat][n]) if len(altorfs_per_bin[cat][n]) != 0 else 0. for n in bin_labels} for cat in ['one_snp', 'one_ten', 'over_ten']}
 
         return jsonify({'outcome': 'success',
             'study_name': study_name,
