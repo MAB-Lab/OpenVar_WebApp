@@ -228,7 +228,7 @@ def get_results_json(guid):
         prot_stats = dict()
         count_graph = dict()
         prot_counts = dict()
-        if len(general_stats.keys() == 3):
+        if len(general_stats.keys()) == 3:
             prot_allnulls = hotspots_allnulls = gene_allnulls
             hotspots_top10 = {}
             hotspots_top100 = {}
