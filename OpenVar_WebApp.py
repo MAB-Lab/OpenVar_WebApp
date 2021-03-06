@@ -232,9 +232,9 @@ def get_results_json(guid):
             prot_allnulls = hotspots_allnulls = gene_allnulls
             hotspots_top10 = {}
             hotspots_top100 = {}
-            gene_counts = {}
+            altorf_counts = {}
             colors = {}
-            altorf_per_gene = {}
+            mean_impact_per_bin = {}
         else:
             if (len(summary['Protein Level']['Impact Counts']) == 0) and (len(summary['Protein Level']['Fold Change']) == 0) and (len(summary['Protein Level']['Impact Annotation']) == 0):
                 prot_allnulls = 'True'
@@ -255,9 +255,9 @@ def get_results_json(guid):
                 hotspots_allnulls = 'True'
                 hotspots_top10 = {}
                 hotspots_top100 = {}
-                gene_counts = {}
                 colors = {}
-                altorf_per_gene = {}
+                altorf_counts = {}
+                mean_impact_per_bin = {}
             else:
                 hotspots_allnulls = 'False'
                 hotspots = dict(zip(list(summary['Mutational hotspots on altORFs'].keys()), [[summary['Mutational hotspots on altORFs'][x]['total_portion_gene'], summary['Mutational hotspots on altORFs'][x]['cnt_snps'], summary['Mutational hotspots on altORFs'][x]['score'], summary['Mutational hotspots on altORFs'][x]['mean_impacts']] for x in list(summary['Mutational hotspots on altORFs'].keys())]))
