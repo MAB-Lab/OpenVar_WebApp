@@ -100,6 +100,13 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             print('Moving input file...')
             input_file = os.path.join(upload_path, (guid+'.vcf'))
             os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
+        elif not vcf.lift_check:
+            print('Writin error file')
+            with open(error_file, 'w') as f:
+                f.write('No variants from your input vcf could be lifted over to hg38. Please check the genome version of your input vcf (e.g. hg19 or b37).')
+            print('Moving input file...')
+            input_file = os.path.join(upload_path, (guid+'.vcf'))
+            os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
         else:
             opv = OpenVar(snpeff_path = '/open-var-deposit/snpEff/', 
                     vcf = vcf)
