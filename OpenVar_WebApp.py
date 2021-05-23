@@ -102,6 +102,7 @@ def run_openvar(guid, study_name, species, genome_version, annotation, upload_pa
             os.rename(input_file, os.path.join(result_path, 'input_vcf.vcf'))
         elif not vcf.lift_check:
             print('Writin error file')
+            error_file = os.path.join(os.path.join(result_path, guid), 'error.txt')
             with open(error_file, 'w') as f:
                 f.write('No variants from your input vcf could be lifted over to hg38. Please check the genome version of your input vcf (e.g. hg19 or b37).')
             print('Moving input file...')
