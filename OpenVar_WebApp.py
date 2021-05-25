@@ -42,12 +42,11 @@ class UserInputForm(FlaskForm):
     species = SelectField("Species:", 
             choices=[("human", "Human"), ("mouse", "Mouse"), ("rat", "Rat"), ("fruit fly", "Fruit fly")], 
             validators=[DataRequired()])
-    genome = SelectField("Genome version used in VCF:", 
-            choices=[("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")], 
+    genome = SelectField("Genome assembly used in VCF:", 
+            choices=[("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19"), ("b37", "GRCH37 / b37")], 
             validators=[DataRequired()])
     build = SelectField("Genome build to annotate the VCF:", 
-            choices=[("OP_Ensembl", "OpenProt (Ensembl)"), ("OP_RefSeq", "OpenProt (NCBI RefSeq)"), ("Ensembl", "Ensembl (only canonical sequences)"), ("RefSeq", "NCBI RefSeq (only canonical sequences")], 
-            validators=[DataRequired()])
+            choices=[("OP_Ensembl", "OpenProt (Ensembl)"), ("OP_RefSeq", "OpenProt (NCBI RefSeq)"), ("Ensembl", "Ensembl (only canonical sequences)"), ("RefSeq", "NCBI RefSeq (only canonical sequences")], validators=[DataRequired()])
     guid = StringField("GUID:")
 
 class CombinedForm(FlaskForm):
@@ -186,7 +185,7 @@ def help():
 @app.route('/openvar/submit', methods=["GET"])
 def submit():
     form=CombinedForm()
-    form.user_input.genome.choices = [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")]
+    form.user_input.genome.choices = [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19"), ("b37", "GRCH37 / b37")]
     return render_template("OPV_submit.html", form=form)
 
 # Route for user input form submission
@@ -423,8 +422,8 @@ def upload():
 # Route for dynamic genome version display
 @app.route('/openvar/genome/<species>')
 def genome(species):
-    genomes = {"human": [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19")], "mouse": [("mm39", "GRCm39 / mm39"), ("mm10", "GRCm38 / mm10")], 
-            "rat": [("rn6", "RGSC6.0 / rn6"), ("rn5", "RGSC5.0 / rn5")], "fruit fly": [("dm6", "BDGP R6 / dm6"), ("dm5", "BDGP R5 / dm5")]}
+    genomes = {"human": [("hg38", "GRCh38 / hg38"), ("hg19", "GRCh37 / hg19"), ("b37", "GRCH37 / b37")], "mouse": [("mm39", "GRCm39 / mm39"), ("mm10", "GRCm38 / mm10")], 
+            "rat": [("rn7", "RGSC7.0 / rn7"), ("rn6", "RGSC6.0 / rn6")], "fruit fly": [("dm6", "BDGP R6 / dm6"), ("dm3", "BDGP R5 / dm3")]}
     versionArray = []
     for version_tuple in genomes[species]:
         version = {}
