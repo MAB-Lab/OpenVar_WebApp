@@ -8,9 +8,9 @@ $(document).ready(function() {
 		console.log(qname);
 
 		if ( $(qname).css("display") == "none" ) {
-			$('#' + qname).attr('style', 'display: block;');
+			$(qname).attr('style', 'display: block;');
 		} else {
-			$('#' + qname).attr('style', 'display: none;');
+			$(qname).attr('style', 'display: none;');
 		}
 
 	});
