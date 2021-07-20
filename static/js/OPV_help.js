@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$('.reveal_hide').click( function(event) {
 		event.preventDefault()
 
-		var qname = '#' + event.target.name;
+		var qname = '#' + $(this).attr('name');
 		console.log(qname);
 
 		if ( $(qname).css("display") == "none" ) {
