@@ -20,12 +20,12 @@
 			<div class="faq__principles">
 				<h1> The hypotheses behind OpenVar </h1>
 				<div class="faq_openvar">
-					<p name="opv_q1" class="reveal_hide"> This is the first question </p>
-					<p id="opv_q1" name="opv_q1" class="answer"> This is the first response </p>
-					<p name="opv_q2" class="reveal_hide"> This is the second question </p>
-					<p id="opv_q2" name="opv_q2" class="answer"> This is the second response </p>
-					<p name="opv_q3" class="reveal_hide"> This is the third question </p>
-					<p id="opv_q3" name="opv_q3" class="answer"> This is the third response </p>
+					<p name="opv_q1" class="reveal_hide"> What is the genome annotation model used by OpenVar?</p>
+					<p id="opv_q1" name="opv_q1" class="answer"> OpenVar uses the <a href="https://openprot.org/" title="OpenProt" target="_blank">OpenProt</a> annotation model. OpenProt is the first and only protein database to enforce a polycistronic model of mammalian genome annotation. Where common genome annotations report a single coding sequence (CDS) per transcript, OpenProt allows for multiple coding sequence per transcript. Therefore, OpenProt reports dual-coding and polycistronic genes in eukaryotic genomes. For more information, PMID <a href="https://pubmed.ncbi.nlm.nih.gov/33179748/" title="Brunet et al, NAR, 2019" target="_blank">33179748</a>. </p>
+					<p name="opv_q2" class="reveal_hide"> What is OpenProt? How can I know more about OpenProt? </p>
+					<p id="opv_q2" name="opv_q2" class="answer"> <a href="https://openprot.org/" title="OpenProt" target="_blank">OpenProt</a> is the first proteogenomic resource supporting a polycistronic annotation model of eukaryotic genomes. It is freely available at www.openprot.org. Every release and related articles can be found in the about section of the website or <a href="https://openprot.org/p/about" title="OpenProt About" target="_blank">here</a>. </p>
+					<p name="opv_q3" class="reveal_hide"> What is an alternative open reading frame (altORF) / alternative protein (altProt)? </p>
+					<p id="opv_q3" name="opv_q3" class="answer"> Current genome annotations in eukaryotes rely partly on ORF prediction algorithms, which are reliable only for sequences above a certain length. Consequently, three main criteria are enforced to distinguish true ORFs from randoms: (1) a minimum length of 100 codons; (2) a single coding sequence (CDS) per transcript; and (3) the use of an ATG start codon. However, in OpenProt, we use different terms to identify proteins based upon their genome annotation status.<br> Proteins currently annotated in databases, such as UniProtKB, are translated from canonical CDSs (reference ORFs or refORFs) and are termed reference proteins (or RefProts). <br> Alternative ORFs (or AltORFs) are defined as potential protein-coding ORF, located either in non-coding RNAs (e.g. long non-coding RNAs, pseudogene RNAs, etc...), or in UTRs or alternative reading frames overlapping a CDS in mRNAs. Predicted proteins translated from AltORFs are termed alternative proteins (or AltProts; IP_). AltProt and RefProt from a same gene are not isoforms: they are coded by different ORFs and their amino acid sequence is completely different. <br> Predicted proteins translated from an alternative ORF (as defined above), but that either display (1) a close homology with a reference protein from the same gene; (2) the same start and/or stop codon than the reference protein; and an alignment score above the threshold are considered novel isoforms of the reference proteins (or Isoforms; II_). </p>
 				</div>
 			</div>
 
