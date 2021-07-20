@@ -51,40 +51,66 @@ body{
 }
 
 /*Documentation display*/
-dl.faq > button {
-	margin: 0;
-    	padding: 0;
-	margin-top: 1em;
-        font-weight: bold;
-      	font-size: 110%;
-	border: thin solid transparent;
-	background-color: transparent;
-	padding-left: 0.125em;
+.doc__grid{
+	display:grid;
+	grid-template-columns: 5% 1fr 5%;
+	grid-template-rows: 15px auto auto auto 15px;
+	grid-gap: 15px;
 }
-dl > dd {
-	margin: 0;
-	padding: 0;
-	margin-left: 1.5em;
+.doc__header{
+	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#e1f9f3;
 }
-dl.faq > .desc {
-	margin: 0;
-	padding: 0.5em;
-	font-size: 110%;
-	display: none;
-	background-color: #fffedb;
+.faq__principles{
+	grid-column: 2 / 3;
+	grid-row: 3 / 4;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#fdfddb;
+	padding: 10px 10px;
+	grid-gap: 5px;
+	display:grid;
+	grid-auto-rows: auto;
 }
-dl.faq > button:hover,
-dl.faq > button:focus {
-	background-color: #eee;
+.faq__principles > h1{
+	font-size: 20px;
+	font-weight:bold;
+	text-align:center;
+	color:#ffaa00;
 }
-dl.faq > button:focus {
-	border-color: #630;
+.faq_openvar{
+	display:grid;
+	grid-auto-rows: auto;
 }
-dl.faq > button:hover {
-	text-decoration: underline;
+.faq__website{
+	grid-column: 2 / 3;
+	grid-row: 4 / 5;
+	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
+	background-color:#fdfddb;
+	padding: 10px 10px;
+	grid-gap: 5px;
+	display:grid;
+	grid-auto-rows: auto;
 }
-dl.faq > button:active {
-	background-color: #bbb;
+.faq__website > h1{
+	font-size: 20px;
+	font-weight:bold;
+	text-align:center;
+	color:#ffaa00;
+}
+.faq_website{
+	display:grid;
+	grid-auto-rows: auto;
+}
+
+.answer{
+	display: hide;
+	background-color:#ffbb33;
+}
+.reveal_hide:hover{
+	cursor: pointer;
+	background-color:#ffbb33;
 }
 
 /*Footer display*/

@@ -10,42 +10,33 @@
 	<body>
 		{% extends "OPV_navbar.html" %}
 		{% block content %}
-		<h1> OpenVar Help </h1>
+		<div class="doc__grid">
+			
+			<div class="doc__header">
+				<h1> OpenVar Documentation </h1>
+			</div>
 
-		<div class="Principles">
-			<h1> The hypotheses behind OpenVar </h1>
-			<dl class="faq">
-				<dt>
-					<button aria-expanded="false" aria-controls="faq1_desc"> This is the first question. </button>
-				</dt>
-				<dd>
-					<p id="faq1_desc" class="desc"> This is the first answer </p>
-				</dd>
-				<dt>
-					<button aria-expanded="false" aria-controls="faq2_desc"> This is the second question. </button>
-				</dt>
-				<dd>
-					<p id="faq2_desc" class="desc"> This is the second answer </p>
-				</dd>
-				<dt>
-					<button aria-expanded="false" aria-controls="faq3_desc"> This is the third question. </button>
-				</dt>
-				<dd>
-					<p id="faq3_desc" class="desc"> This is the third answer </p>
-				</dd>
-			</dl>
-		</div>
+			<div class="faq__principles">
+				<h1> The hypotheses behind OpenVar </h1>
+				<div class="faq_openvar">
+					<p name="opv_q1" class="reveal_hide"> This is the first question </p>
+					<p id="opv_q1" class="answer"> This is the first response </p>
+					<p name="opv_q2" class="reveal_hide"> This is the second question </p>
+					<p id="opv_q2" class="answer"> This is the second response </p>
+					<p name="opv_q3" class="reveal_hide"> This is the third question </p>
+					<p id="opv_q3" class="answer"> This is the third response </p>
+				</div>
+			</div>
 
-		<div class="Website">
-			<h1> How to use the OpenVar website </h1>
-			<dl class="faq">
-				<dt>
-					<button aria-expanded="false" aria-controls="faq1_desc"> This is the first question. </button>
-				</dt>
-				<dd>
-					<p id="faq1_desc" class="desc"> This is the first answer </p>
-				</dd>
-			</dl>
+			<div class="faq__website">
+				<h1> How to use the OpenVar website </h1>
+				<div class="faq_website">
+					<p name="opv_q1" class="reveal_hide"> This is the first question </p>
+					<p id="opv_q1" class="answer"> This is the first response </p>
+					<p name="opv_q2" class="reveal_hide"> This is the second question </p>
+					<p id="opv_q2" class="answer"> This is the second response </p>
+				</div>
+			</div>
 		</div>
 
 		<div class="footer">
