@@ -63,6 +63,12 @@ body{
 	box-shadow: -1px 0 #ddd, 0 1px #ddd, 1px 0 #ddd, 0 -1px #ddd, 5px 5px 3px #ddd;
 	background-color:#e1f9f3;
 }
+.doc__header > h1{
+	font-size:28px;
+	color: #090494;
+	font-weight:bold;
+	text-align:center;
+}
 .faq__principles{
 	grid-column: 2 / 3;
 	grid-row: 3 / 4;
@@ -105,7 +111,7 @@ body{
 }
 
 .answer{
-	display: hide;
+	display: none;
 	background-color:#ffbb33;
 }
 .reveal_hide:hover{
