@@ -83,7 +83,7 @@ body{
 	font-size: 20px;
 	font-weight:bold;
 	text-align:center;
-	color:#ffaa00;
+	color:#444;
 }
 .faq_openvar{
 	display:grid;
@@ -103,7 +103,7 @@ body{
 	font-size: 20px;
 	font-weight:bold;
 	text-align:center;
-	color:#ffaa00;
+	color:#444;
 }
 .faq_website{
 	display:grid;
@@ -112,7 +112,14 @@ body{
 
 .answer{
 	display: none;
-	background-color:#ffbb33;
+	background-color:#ffc95c;
+	font-size: 14px;
+	color: #444;
+}
+.reveal_hide{
+	font-size: 16px;
+	font-weight:bold;
+	color: #444;
 }
 .reveal_hide:hover{
 	cursor: pointer;
