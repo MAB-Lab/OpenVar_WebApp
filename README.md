@@ -13,4 +13,6 @@ Then, you are asked to select the adequate parameters for your analysis. As Open
 
 **Before clicking on "Run analysis"**, you have to upload your unannotated VCF file using the upload form at the bottom of your screen. A progress bar will appear and a message confirming the upload of your data will be displayed if the upload was completed successfully!
 
+![](static/images/OpenVar_upload_completed.JPG)
+
 
