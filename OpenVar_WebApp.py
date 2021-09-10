@@ -82,6 +82,7 @@ def send_email(to, subject, mg_domain, mg_key, plain=None, from_address=None):
 def run_openvar(guid, study_name, species, genome_version, annotation, upload_path, result_path, email, mg_domain, mg_key):
     try:
         print('Launching OpenVar...')
+        print('Study name: ' + study_name + ' / Email: ' + email)
         input_file = os.path.join(upload_path, (guid+'.vcf'))
         vcf = SeqStudy(data_dir = upload_path, 
                 file_name = (guid + '.vcf'), 
