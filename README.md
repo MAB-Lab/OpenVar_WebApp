@@ -82,7 +82,9 @@ The graph complements the table with picturing the number of altORF per the perc
 
 ## Help
 
-If you have any questions regarding OpenVar, please don't hesitate to ![contact us](https://openprot.org/p/ng/contactUs).
+### Demo files and output
+An example input file can be found in the GitHub repository, [here](https://github.com/MAB-Lab/OpenVar_WebApp/blob/main/vcf_cosmic_HEY2.vcf).
+The output related to this example input can be found [here](https://www.openprot.org/openvar/1b155796-05b2-4e80-9ded-4d9a5e0eb714)
 
 ### Input file format
 The expected input format is a Variant Call Format ([VCF](https://samtools.github.io/hts-specs/VCFv4.2.pdf). It is the de facto standard file format for genomic variants. Other formats should be converted to a VCF format, below are a few examples to run on a shell.
@@ -93,4 +95,4 @@ BED input files can be converted using [PLINK](https://www.cog-genomics.org/plin
 In order to produce a VCF input from a list of dbSNP identifiers, download the VCF file containing all variants within dbSNP [here](https://ftp.ncbi.gov/snp/organisms/human_9606/VCF/)
 Then use the following command: <code>grep -wFf dbsnp_id_list.txt my_vcf.vcf > /path_to_output_folder</code>
 
-
+If you have any questions regarding OpenVar, please don't hesitate to ![contact us](https://openprot.org/p/ng/contactUs).
